@@ -1,0 +1,43 @@
+<ion-header (click)="close($event)">
+  <ion-toolbar>
+    <ion-title>
+      {{inventory.caryear}} {{inventory.car}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span color="primary" showWhen="ios">Close</span>
+        <ion-icon name="md-close" showWhen="android,windows,browser"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content (click)="close($event)">
+  <ion-list>
+      <ion-item text-wrap>
+        <img src="{{inventory.imageurl}}">
+        <h2>
+            <a href="geo:0,0?q={{inventory.location.address}}">{{inventory.location.address}}</a>
+        </h2>
+        <br />
+        <h2>
+          <a href="tel:{{inventory.location.phonenumber}}">{{inventory.location.phonenumber}}</a>
+        </h2>
+      </ion-item>
+  </ion-list>
+</ion-content>
+
+<!--
+<ion-card>
+  <img src="{{inventory.imageurl}}"/>
+  <ion-card-content>
+    <ion-card-title>
+      {{inventory.caryear}} {{inventory.car}}
+      </ion-card-title>
+    <p>
+      <h2>{{inventory.location.address}}</h2>
+      <h2>{{inventory.location.phonenumber}}</h2>
+    </p>
+  </ion-card-content>
+</ion-card>
+-->

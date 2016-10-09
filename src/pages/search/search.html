@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Search</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-list padding>
+    <ion-item *ngFor="let inventory of inventories" (click)="itemTapped($event, inventory)">
+      <h3>{{inventory.caryear}} {{inventory.car}}</h3>
+      <p>{{inventory.timeago}}</p>
+      <h3 item-right>{{inventory.location.label}}</h3>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,10 @@
+page-watches {
+    background: url('/assets/bg_accept.png') no-repeat right bottom fixed; 
+    -webkit-background-size: 25%;
+    -moz-background-size: 25%;
+    background-size: 25%;
+}
+
+page-watches .item-md, page-watches .list-md, page-watches .content-md {
+    background-color:transparent;
+}

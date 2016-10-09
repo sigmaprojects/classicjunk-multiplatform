@@ -1,0 +1,10 @@
+page-search {
+    background: url('/assets/bg_search.png') no-repeat right bottom fixed; 
+    -webkit-background-size: 25%;
+    -moz-background-size: 25%;
+    background-size: 25%;
+}
+
+page-search .item-md, page-search .list-md, page-search .content-md {
+    background-color:transparent;
+}

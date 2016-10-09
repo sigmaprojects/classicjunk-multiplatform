@@ -1,0 +1,121 @@
+import { Component } from '@angular/core';
+
+import { NavController, AlertController, LoadingController, Loading, ModalController, PopoverController, Popover } from 'ionic-angular';
+
+import { KeyValService } from '../../app/providers/keyval.service';
+
+import { WatchService } from '../../app/providers/watch.service';
+
+import { InventoryModal } from '../inventory-modal/inventory-modal';
+
+import { NotificationsOptionsPage } from './notifications.options';
+
+@Component({
+  selector: 'page-notifications',
+  templateUrl: 'notifications.html',
+  providers: [WatchService]
+})
+export class NotificationsPage {
+
+  loader: Loading;
+  optionsPopover: Popover;
+  watchInventories: any;
+
+  constructor(
+    public navCtrl: NavController,
+    public keyValService: KeyValService,
+    public watchService: WatchService,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController
+  ) {
+    this.fetch();
+  }
+
+  itemTapped(event, wi) {
+    let modal = this.modalCtrl.create(
+      InventoryModal,
+      { inventory: wi.inventory }
+    );
+    modal.present();
+  }
+
+  public fetch(): void {
+    this.showLoading("Loading...");
+    this.watchService.getWatchInventories().subscribe(
+      wiResults => {
+        //this.movies = data.results; 
+        //console.log('subscribe getWatchInventories returned');
+        //console.log(JSON.stringify(searchResults));
+        //console.log(JSON.stringify(wiResults));
+        //this.watchInventories = wiResults;
+        this.setWatchInventories(wiResults);
+        this.hideLoading();
+      },
+      (err) => {
+        //console.log("error");
+        //console.log(JSON.stringify(err));
+        //console.log(err.json()); //gives the object object
+        //console.log(JSON.stringify(err.json())); //gives the object object
+        this.hideLoading();
+        this.showErrors(["Error communicating with server, please try again later."]);
+      }
+    );
+  }
+
+  private setWatchInventories(wis: Array<any>): void {
+    for (let wi of wis) {
+      if (!wi.hasOwnProperty("inventory") || !wi.inventory.hasOwnProperty("location")) {
+        let index = wis.indexOf(wi, 0);
+        if (index > -1) {
+          wis.splice(index, 1);
+        }
+      }
+    }
+    this.watchInventories = wis;
+  }
+  
+  public getWatchInventories(): Array<any> {
+    return this.watchInventories;
+  }
+
+
+  private showLoading(content: string): void {
+    this.loader = null;
+    this.loader = this.loadingCtrl.create({
+      content: content,
+      dismissOnPageChange: true
+    });
+    this.loader.present();
+  }
+
+  private hideLoading(): void {
+    this.loader.dismiss();
+  }
+
+  public presentPopover(ev): void {
+    this.optionsPopover = this.popoverCtrl.create(NotificationsOptionsPage, {
+      caller: this
+    });
+    this.optionsPopover.present({ ev: ev });
+  }
+
+  public dismissPopover(): void {
+    try {
+      this.optionsPopover.dismiss();
+    } catch(e) {}
+  }
+
+  private showErrors(errors: Array<string>) {
+    //console.log('errors here?');
+    //console.log(JSON.stringify(errors));
+    let alert = this.alertCtrl.create({
+      title: 'Woops',
+      subTitle: errors.join("<br />"),
+      buttons: ['Okay']
+    });
+    alert.present();
+  }
+
+}

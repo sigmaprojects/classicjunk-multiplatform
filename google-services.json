@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "352912943392",
+    "firebase_url": "https://classicjunk-multiplat.firebaseio.com",
+    "project_id": "classicjunk-multiplat",
+    "storage_bucket": "classicjunk-multiplat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352912943392:android:747201564c94af87",
+        "android_client_info": {
+          "package_name": "org.sigmaprojects.ClassicJunk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352912943392-r1qjqdlcrm5ns7inbupe6dqoqlnm9fbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwzNGOL5mnNcU8PaDv0ApYiKj_dGtyJJk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,5 @@
+curl -X POST --header "Authorization: key=AIzaSyDrRbclmRnoXJ8wPmVO97WRlHTGVVMNyIk" --Header "Content-Type: application/json" https://fcm.googleapis.com/fcm/send -d "{\"to\":\"fIcykrRBYLI:APA91bFE6W-ijF5-sMWgycy5HFw1klBSu6QrU8yGMoVSOvZRNm4pi4V2u9_N-bH-OcBPwWWWNFGJ7gtmUknMAmSd0WU5GDX7f2kf3xxP1xUjoPiAilymVTk8prgzOmCNhftXGnqPVMCs\",\"data\":{\"body\":\"Yellow\"} \"priority":\"10"}"
+
+C:\Users\don\AppData\Local\Android\sdk\build-tools\24.0.3\zipalign.exe -v 4 .\android-release-unsigned.apk classicjunk-release-unsigned-aligned.apk
+
+C:\PROGRA~1\Java\jdk1.8.0_101\bin\jarsigner.exe -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore c:\android.keystore .\android-release-unsigned.apk ClassicJunk

@@ -1,0 +1,10 @@
+page-notifications {
+    background: url('/assets/bg_mail_receive.png') no-repeat right bottom fixed; 
+    -webkit-background-size: 25%;
+    -moz-background-size: 25%;
+    background-size: 25%;
+}
+
+page-notifications .item-md, page-notifications .list-md, page-notifications .content-md {
+    background-color:transparent;
+}

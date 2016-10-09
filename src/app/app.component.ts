@@ -1,0 +1,249 @@
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform, AlertController, LoadingController  } from 'ionic-angular';
+import { StatusBar, Push } from 'ionic-native';
+
+import { NotificationsPage } from '../pages/notifications/notifications';
+import { Search } from '../pages/search/search';
+import { Watches } from '../pages/watches/watches';
+
+import { KeyValService } from './providers/keyval.service';
+import { FCMService } from './providers/fcm.service';
+
+import { SearchModal } from '../pages/search/searchmodal';
+import { CarSearchService } from './providers/search.service';
+
+@Component({
+    templateUrl: 'app.html',
+    providers: [KeyValService,SearchModal,CarSearchService,FCMService]
+})
+export class ClassicJunkApp {
+
+    @ViewChild(Nav) nav: Nav;
+
+    rootPage: any = NotificationsPage;
+
+    pages: Array<{ title: string, component: any }>;
+
+    shareService: any;
+
+    constructor(
+        public platform: Platform,
+        public alertCtrl: AlertController,
+        private keyvalService: KeyValService,
+        public searchModal: SearchModal,
+        public carSearchService: CarSearchService,
+        public loadingCtrl: LoadingController,
+        public fcmService: FCMService
+    ) {
+        console.log("MyApp Constructor");
+
+        //this.shareService = myshareService;
+        this.initializeApp();
+
+        // used for an example of ngFor and navigation
+        this.pages = [
+            { title: 'Notifications', component: NotificationsPage },
+            { title: 'My Alerts', component: Watches },
+            { title: 'Search', component: Search }
+        ];
+
+    }
+
+    initializeApp() {
+        this.platform.ready().then(() => {
+            // Okay, so the platform is ready and our plugins are available.
+            // Here you can do any higher level native things you might need.
+            StatusBar.styleDefault();
+            try {
+                this.pushSetup();
+            } catch(e) {
+                //console.log("Error setting up Push");
+                //console.log(JSON.stringify(e));
+            }
+
+            this.start();
+        });
+    }
+
+    openPage(page) {
+        // Reset the content nav to have just this page
+        // we wouldn't want the back button to show in this scenario
+        if (page.title == "Search") {
+            this.showAlert();
+        } else {
+            this.nav.setRoot(page.component);
+        }
+    }
+
+
+    pushSetup() {
+        let push = Push.init({
+            android: {
+                senderID: "352912943392",
+                icon: "ic_notification",
+                iconColor: "#c94545"
+            },
+            ios: {
+                alert: "true",
+                badge: false,
+                sound: "true"
+            },
+            windows: {}
+        });
+
+        push.on('registration', (data) => {
+            console.log("device token ->", data.registrationId);
+            this.fcmService.register(data.registrationId).subscribe(
+                regResults => {
+                    console.log('subscribe register fcm returned');
+                    console.log(JSON.stringify(regResults));
+                },
+                (err) => {
+                    console.log("fcm registration error");
+                    //console.log(JSON.stringify(err));
+                    //console.log(err.json()); //gives the object object
+                    //console.log(JSON.stringify(err.json())); //gives the object object
+                }
+            );;
+        });
+        push.on('notification', (data) => {
+            console.log('notification message', data.message);
+            console.log(JSON.stringify(data));
+            let self = this;
+            //if user using app and push notification comes
+            if (data.additionalData.foreground) {
+                // if application open, show popup
+                let confirmAlert = this.alertCtrl.create({
+                    title: data.title,
+                    message: data.message,
+                    buttons: [{
+                        text: 'Ignore',
+                        role: 'cancel'
+                    }, {
+                        text: 'View',
+                        handler: () => {
+                            //TODO: Your logic here
+                            self.nav.push(NotificationsPage, { message: data.message });
+                        }
+                    }]
+                });
+                confirmAlert.present();
+            } else {
+                //if user NOT using app and push notification comes
+                //TODO: Your logic on click of push notification directly
+                //self.nav.push(NotificationsPage, { message: data.message });
+                this.nav.setRoot(NotificationsPage);
+                console.log("Push notification clicked");
+            }
+        });
+        push.on('error', (e) => {
+            console.log(e.message);
+        });
+    }
+
+
+    start() {
+
+        //console.log("Device UUID:" + Device.device.uuid);
+        //this.keyvalService.set("deviceuuid",Device.device.uuid);
+
+        let options = { maximumAge: 10000, timeout: 5000, enableHighAccuracy: true };
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let coords = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                //console.log("onGeoSuccess; Latitude: " + coords.latitude + " Longitude: " + coords.longitude);
+                this.keyvalService.set(KeyValService.PositionCoordsKey, coords).then(
+                    () => {
+                        //console.log('Geo found, storing');
+                    },
+                    (err) => {
+                        //console.error('Error storing item', error);
+                    }
+                );
+
+            },
+            (error) => {
+                //console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+            },
+            options
+        );
+
+        //console.log("started???-");
+    }
+
+    showAlert() {
+        let loader = this.loadingCtrl.create({
+            content: "Please wait...",
+            dismissOnPageChange: true
+        });
+    
+        //let self = this;
+        this.keyvalService.get(KeyValService.LastSearchParamsKey).then(
+            (lastSearchParams) => {
+                
+                //console.log('lastSearchParams?');
+                //console.log(JSON.stringify(lastSearchParams));
+
+                let modal = this.searchModal.getModal(
+                    lastSearchParams,
+                    (searchProperties) => {
+
+                    //console.log('holy fuckin shit it worked');
+                    //console.log(JSON.stringify(searchProperties));
+                    
+                    loader.present();
+
+                    this.keyvalService.set(KeyValService.LastSearchParamsKey,searchProperties)
+
+                    this.carSearchService.searchInventory(
+                        searchProperties.car,
+                        searchProperties.yearStart,
+                        searchProperties.yearEnd,
+                        searchProperties.latitude,
+                        searchProperties.longitude,
+                        searchProperties.zipcode
+                    ).subscribe(
+                        searchResults => {
+                            //this.movies = data.results; 
+                            //console.log('subscribe search results returned');
+                            //console.log(JSON.stringify(searchResults));
+                            this.nav.setRoot(Search, {inventories: searchResults});
+                        },
+                        err => {
+                            //console.log("error");
+                            //console.log(JSON.stringify(err));
+                            //console.log(err.json()); //gives the object object
+                            //console.log(JSON.stringify(err.json())); //gives the object object
+                            this.showErrors(["Error communicating with server, please try again later."]);
+                        },
+                        () => {
+                            //console.log('Car Search Complete');
+                        }
+                    );
+
+                });
+                modal.present();
+                
+            },
+            (error) => {
+                //console.error('Error getting coords', error);
+            }
+        );
+
+    }
+
+  private showErrors(errors: Array<string>) {
+    //console.log('errors here?');
+    //console.log(JSON.stringify(errors));
+    let alert = this.alertCtrl.create({
+      title: 'Woops',
+      subTitle: errors.join("<br />"),
+      buttons: ['Okay']
+    });
+    alert.present();
+  }
+
+}
