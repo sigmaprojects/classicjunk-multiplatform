@@ -29,7 +29,7 @@ export class ClassicJunkApp {
         public loadingCtrl: LoadingController,
         public fcmService: FCMService
     ) {
-        console.log("MyApp Constructor");
+        //console.log("MyApp Constructor");
 
         this.initializeApp();
 
@@ -88,16 +88,19 @@ export class ClassicJunkApp {
                     console.log(JSON.stringify(regResults));
                 },
                 (err) => {
-                    console.log("fcm registration error");
-                    //console.log(JSON.stringify(err));
-                    //console.log(err.json()); //gives the object object
-                    //console.log(JSON.stringify(err.json())); //gives the object object
+                    /*
+                    console.log("START: FCM Registration Error");
+                    console.log(JSON.stringify(err));
+                    console.log(err.json()); //gives the object object
+                    console.log(JSON.stringify(err.json())); //gives the object object
+                    console.log("END: FCM Registration Error");
+                    */
                 }
             );;
         });
         push.on('notification', (data) => {
             console.log('notification message', data.message);
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
             let self = this;
             //if user using app and push notification comes
             if (data.additionalData.foreground) {
@@ -112,7 +115,8 @@ export class ClassicJunkApp {
                         text: 'View',
                         handler: () => {
                             //TODO: Your logic here
-                            self.nav.push(NotificationsPage, { message: data.message });
+                            //self.nav.push(NotificationsPage);
+                            this.nav.setRoot(NotificationsPage);
                         }
                     }]
                 });
@@ -122,11 +126,11 @@ export class ClassicJunkApp {
                 //TODO: Your logic on click of push notification directly
                 //self.nav.push(NotificationsPage, { message: data.message });
                 this.nav.setRoot(NotificationsPage);
-                console.log("Push notification clicked");
+                //console.log("Push notification clicked");
             }
         });
         push.on('error', (e) => {
-            console.log(e.message);
+            console.log('push.On error: ' + e.message);
         });
     }
 

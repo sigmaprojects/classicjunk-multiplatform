@@ -25,6 +25,11 @@ export class Watches {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController
   ) {
+    
+  }
+
+  ngOnInit() {
+    //console.log('oninitfired');
     this.fetch();
   }
 

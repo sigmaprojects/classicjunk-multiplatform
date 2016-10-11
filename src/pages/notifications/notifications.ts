@@ -30,10 +30,16 @@ export class NotificationsPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController
   ) {
+    
+  }
+
+  ngOnInit() {
+    //console.log('oninitfired');
     this.fetch();
   }
 
-  itemTapped(event, wi) {
+  itemTapped(event, i) {
+    let wi = this.watchInventories[i];
      if( !wi.hasOwnProperty('id') ) {
       return;
     }
