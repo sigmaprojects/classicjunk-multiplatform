@@ -14,9 +14,9 @@
 
 <ion-content>
 
-  <ion-list padding>
+  <ion-list>
     <ion-item *ngFor="let wi of watchInventories" (click)="itemTapped($event, wi)">
-      <h3>{{wi.inventory.caryear}} {{wi.inventory.car}}</h3>
+      <h4>{{wi.inventory.caryear}} {{wi.inventory.car}}</h4>
       <p>{{wi.timeago}}</p>
       <h3 item-right>{{wi.inventory.location.label}}</h3>
     </ion-item>

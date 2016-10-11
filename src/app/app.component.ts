@@ -9,12 +9,10 @@ import { Watches } from '../pages/watches/watches';
 import { KeyValService } from './providers/keyval.service';
 import { FCMService } from './providers/fcm.service';
 
-import { SearchModal } from '../pages/search/searchmodal';
-import { CarSearchService } from './providers/search.service';
 
 @Component({
     templateUrl: 'app.html',
-    providers: [KeyValService,SearchModal,CarSearchService,FCMService]
+    providers: [KeyValService,FCMService]
 })
 export class ClassicJunkApp {
 
@@ -24,26 +22,21 @@ export class ClassicJunkApp {
 
     pages: Array<{ title: string, component: any }>;
 
-    shareService: any;
-
     constructor(
         public platform: Platform,
         public alertCtrl: AlertController,
         private keyvalService: KeyValService,
-        public searchModal: SearchModal,
-        public carSearchService: CarSearchService,
         public loadingCtrl: LoadingController,
         public fcmService: FCMService
     ) {
         console.log("MyApp Constructor");
 
-        //this.shareService = myshareService;
         this.initializeApp();
 
         // used for an example of ngFor and navigation
         this.pages = [
             { title: 'Notifications', component: NotificationsPage },
-            { title: 'My Alerts', component: Watches },
+            { title: 'Set Alerts', component: Watches },
             { title: 'Search', component: Search }
         ];
 
@@ -60,19 +53,15 @@ export class ClassicJunkApp {
                 //console.log("Error setting up Push");
                 //console.log(JSON.stringify(e));
             }
-
             this.start();
+            //navigator.splashscreen.hide();
         });
     }
 
     openPage(page) {
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
-        if (page.title == "Search") {
-            this.showAlert();
-        } else {
-            this.nav.setRoot(page.component);
-        }
+        this.nav.setRoot(page.component);
     }
 
 
@@ -173,77 +162,5 @@ export class ClassicJunkApp {
 
         //console.log("started???-");
     }
-
-    showAlert() {
-        let loader = this.loadingCtrl.create({
-            content: "Please wait...",
-            dismissOnPageChange: true
-        });
-    
-        //let self = this;
-        this.keyvalService.get(KeyValService.LastSearchParamsKey).then(
-            (lastSearchParams) => {
-                
-                //console.log('lastSearchParams?');
-                //console.log(JSON.stringify(lastSearchParams));
-
-                let modal = this.searchModal.getModal(
-                    lastSearchParams,
-                    (searchProperties) => {
-
-                    //console.log('holy fuckin shit it worked');
-                    //console.log(JSON.stringify(searchProperties));
-                    
-                    loader.present();
-
-                    this.keyvalService.set(KeyValService.LastSearchParamsKey,searchProperties)
-
-                    this.carSearchService.searchInventory(
-                        searchProperties.car,
-                        searchProperties.yearStart,
-                        searchProperties.yearEnd,
-                        searchProperties.latitude,
-                        searchProperties.longitude,
-                        searchProperties.zipcode
-                    ).subscribe(
-                        searchResults => {
-                            //this.movies = data.results; 
-                            //console.log('subscribe search results returned');
-                            //console.log(JSON.stringify(searchResults));
-                            this.nav.setRoot(Search, {inventories: searchResults});
-                        },
-                        err => {
-                            //console.log("error");
-                            //console.log(JSON.stringify(err));
-                            //console.log(err.json()); //gives the object object
-                            //console.log(JSON.stringify(err.json())); //gives the object object
-                            this.showErrors(["Error communicating with server, please try again later."]);
-                        },
-                        () => {
-                            //console.log('Car Search Complete');
-                        }
-                    );
-
-                });
-                modal.present();
-                
-            },
-            (error) => {
-                //console.error('Error getting coords', error);
-            }
-        );
-
-    }
-
-  private showErrors(errors: Array<string>) {
-    //console.log('errors here?');
-    //console.log(JSON.stringify(errors));
-    let alert = this.alertCtrl.create({
-      title: 'Woops',
-      subTitle: errors.join("<br />"),
-      buttons: ['Okay']
-    });
-    alert.present();
-  }
 
 }
