@@ -16,7 +16,7 @@ export class Watches {
 
   loader: Loading;
 
-  watches: any;
+  watches: Array<any>;
 
   constructor(
     public navCtrl: NavController,
@@ -36,7 +36,9 @@ export class Watches {
         //console.log('subscribe watches returned');
         //console.log(JSON.stringify(searchResults));
         //console.log(JSON.stringify(watchResults));
-        this.watches = watchResults.results;
+
+        //this.watches = watchResults.results;
+        this.setWatches(watchResults.results);
         this.hideLoading();
       },
       (err) => {
@@ -50,8 +52,23 @@ export class Watches {
     );
   }
 
+  private setWatches(w: Array<any>) {
+    if( w.length <= 0 ) {
+      // show some kind of text to the user if there are 0 watches
+      let stub = {
+        year_start: '',
+        year_end: '',
+        label: 'No alerts setup yet.'
+      };
+      w.push(stub);
+    }
+    this.watches = w;
+  }
+
   public editTapped(event,watch): void {
-    console.log('tapped');
+    if( watch !== null && !watch.hasOwnProperty('id') ) {
+      return;
+    }
     this.keyValService.get(KeyValService.PositionCoordsKey).then(
       (coords) => {
 
@@ -116,7 +133,7 @@ export class Watches {
   }
 
   public deleteWatch(id): void {
-    this.showLoading("Saving...");
+    this.showLoading("Removing...");
 
     this.watchService.delete(
       id
@@ -126,7 +143,8 @@ export class Watches {
         //console.log('subscribe Delete watch returned');
         //console.log(JSON.stringify(searchResults));
         //console.log(JSON.stringify(deleteResults));
-        this.hideLoading();
+        //this.hideLoading();
+        this.fetch();
       },
       (err) => {
         //console.log("error");
@@ -200,7 +218,7 @@ export class Watches {
             lng.toString().length > 3
         ) { 
             inputs.push({ name: 'lat', placeholder: '', type: 'hidden', value: lat });
-            inputs.push({ name: 'lng', placeholder: '', type: 'hidden', value: lat });
+            inputs.push({ name: 'lng', placeholder: '', type: 'hidden', value: lng });
             // insert hidden zipcode just to keep the object sane
             inputs.push({ name: 'zipcode', placeholder: 'Zip Code', type: 'hidden', value: zipcode });
         } else {
@@ -259,7 +277,9 @@ export class Watches {
     }
 
     private hideLoading(): void {
-      this.loader.dismiss();
+      try {
+        this.loader.dismiss();
+      } catch(e) {} 
     }
 
 }

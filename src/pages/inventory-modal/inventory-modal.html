@@ -17,11 +17,13 @@
       <ion-item text-wrap>
         <img src="{{inventory.imageurl}}">
         <h2>
-            <a href="geo:0,0?q={{inventory.location.address}}">{{inventory.location.address}}</a>
+            <!--<a href="geo:0,0?q={{inventory.location.address}}">{{inventory.location.address}}</a>-->
+            <a [href]="addressUrl">{{inventory.location.address}}</a>
         </h2>
         <br />
         <h2>
-          <a href="tel:{{inventory.location.phonenumber}}">{{inventory.location.phonenumber}}</a>
+          <!--<a href="tel:{{inventory.location.phonenumber}}">{{inventory.location.phonenumber}}</a>-->
+          <a [href]="phoneUrl">{{inventory.location.phonenumber}}</a>
         </h2>
       </ion-item>
   </ion-list>

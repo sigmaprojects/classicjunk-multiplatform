@@ -34,6 +34,9 @@ export class NotificationsPage {
   }
 
   itemTapped(event, wi) {
+     if( !wi.hasOwnProperty('id') ) {
+      return;
+    }
     let modal = this.modalCtrl.create(
       InventoryModal,
       { inventory: wi.inventory }
@@ -73,6 +76,22 @@ export class NotificationsPage {
         }
       }
     }
+    
+    if( wis.length <= 0 ) {
+      // show some kind of text to the user if there are 0 notifications
+      let stub = {
+        timeago: '',
+        inventory: {
+          caryear: 'No notifications yet.',
+          car: '',
+          location: {
+            label: ''
+          }
+        }
+      };
+      wis.push(stub);
+    }
+    
     this.watchInventories = wis;
   }
   
@@ -91,7 +110,9 @@ export class NotificationsPage {
   }
 
   private hideLoading(): void {
-    this.loader.dismiss();
+    try {
+      this.loader.dismiss();
+    } catch(e) {}
   }
 
   public presentPopover(ev): void {

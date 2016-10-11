@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  
+
   <ion-list padding>
     <ion-item *ngFor="let wi of watchInventories" (click)="itemTapped($event, wi)">
       <h3>{{wi.inventory.caryear}} {{wi.inventory.car}}</h3>

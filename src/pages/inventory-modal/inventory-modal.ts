@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'inventory-modal',
@@ -9,13 +10,20 @@ import { NavParams, ViewController } from 'ionic-angular';
 export class InventoryModal {
 
   inventory;
+  addressUrl: SafeUrl;
+  phoneUrl: SafeUrl;
 
   constructor(
     public params: NavParams,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    private sanitizer: DomSanitizer
   ) {
     console.log('modal constructor');
     this.inventory = params.get("inventory");
+
+    this.addressUrl = sanitizer.bypassSecurityTrustUrl('geo:0,0?q='+this.inventory.location.address);
+
+    this.phoneUrl = sanitizer.bypassSecurityTrustUrl('tel:'+this.inventory.location.phonenumber);
 
     try {
       this.inventory.location.phonenumber = this.formatPhone(this.inventory.location.phonenumber);
@@ -57,6 +65,8 @@ export class InventoryModal {
     return text;
   }
 
-
+  public sanitize(url: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
 
 }

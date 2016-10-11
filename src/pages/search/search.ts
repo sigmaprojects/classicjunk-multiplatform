@@ -33,6 +33,9 @@ export class Search {
 
   itemTapped(event, inventory) {
     //console.log("got this far");
+    if( !inventory.hasOwnProperty('id') ) {
+      return;
+    }
     let modal = this.modalCtrl.create(
       InventoryModal,
       { inventory: inventory }
