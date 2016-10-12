@@ -33,6 +33,7 @@ export class Search {
     //this.inventories = navParams.get('inventories');
     //let invs = navParams.get('inventories');
     //this.setInventories(invs);
+    console.log("Search constructor");
   }
 
   ngOnInit() {

@@ -29,7 +29,7 @@ export class ClassicJunkApp {
         public loadingCtrl: LoadingController,
         public fcmService: FCMService
     ) {
-        //console.log("MyApp Constructor");
+        console.log("MyApp Constructor");
 
         this.initializeApp();
 
@@ -50,8 +50,8 @@ export class ClassicJunkApp {
             try {
                 this.pushSetup();
             } catch(e) {
-                //console.log("Error setting up Push");
-                //console.log(JSON.stringify(e));
+                console.log("Error setting up Push");
+                console.log(JSON.stringify(e));
             }
             this.start();
             //navigator.splashscreen.hide();
@@ -84,8 +84,8 @@ export class ClassicJunkApp {
             console.log("device token ->", data.registrationId);
             this.fcmService.register(data.registrationId).subscribe(
                 regResults => {
-                    //console.log('subscribe register fcm returned');
-                    //console.log(JSON.stringify(regResults));
+                    console.log('subscribe register fcm returned');
+                    console.log(JSON.stringify(regResults));
                 },
                 (err) => {
                     /*
