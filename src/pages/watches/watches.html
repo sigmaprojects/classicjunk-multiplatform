@@ -9,15 +9,18 @@
 
 <ion-content>
 
+<!--
   <ion-list padding>
     <ion-item *ngFor="let watch of watches" (click)="editTapped($event, watch)">
-
+-->
+  <ion-list [virtualScroll]="watches" [approxItemHeight]="'60px'">
+    <ion-item *virtualItem="let watch; let i = index;" (click)="editTapped($event, i)">
       {{watch.year_start}} &nbsp; {{watch.year_end}} &nbsp; {{watch.label}}
 
     </ion-item>
   </ion-list>
 
-<ion-fab right bottom (click)="editTapped($event, null)">
+<ion-fab right bottom (click)="editTapped($event, '')">
   <button ion-fab mini><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 

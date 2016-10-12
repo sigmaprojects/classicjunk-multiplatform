@@ -43,7 +43,7 @@ export class Watches {
         //console.log(JSON.stringify(watchResults));
 
         //this.watches = watchResults.results;
-        this.setWatches(watchResults.results);
+        this.setWatches(watchResults);
         this.hideLoading();
       },
       (err) => {
@@ -58,22 +58,38 @@ export class Watches {
   }
 
   private setWatches(w: Array<any>) {
+    if( typeof w == 'undefined' ) {
+      w = [];
+    }
     if( w.length <= 0 ) {
       // show some kind of text to the user if there are 0 watches
       let stub = {
         year_start: '',
         year_end: '',
-        label: 'No alerts setup yet.'
+        label: 'No alerts setup yet.',
+        id: -1
       };
       w.push(stub);
     }
     this.watches = w;
   }
 
-  public editTapped(event,watch): void {
-    if( watch !== null && !watch.hasOwnProperty('id') ) {
+
+  public editTapped(event,i): void {
+    let watch = this.watches[i];
+
+    console.log("edit tapped; i: " + i);
+    console.log(JSON.stringify(watch));
+
+    if( typeof i == 'number' && watch.id == -1 ) {
+      console.log("editTapped returning");
       return;
     }
+    
+    if(typeof i == 'string') {
+      watch = null;
+    }
+
     this.keyValService.get(KeyValService.PositionCoordsKey).then(
       (coords) => {
 
@@ -148,7 +164,7 @@ export class Watches {
         //console.log('subscribe Delete watch returned');
         //console.log(JSON.stringify(searchResults));
         //console.log(JSON.stringify(deleteResults));
-        //this.hideLoading();
+        this.hideLoading();
         this.fetch();
       },
       (err) => {

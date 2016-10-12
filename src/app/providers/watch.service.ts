@@ -27,7 +27,7 @@ export class WatchService {
 
     public getWatchInventories(): Observable<any> {
         let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.deviceuuid);
-        console.log("calling url: " + url);
+        //console.log("calling url: " + url);
         var response = this.http.get(url).map(
             (res) => {
                 let results = res.json().results;
@@ -45,14 +45,27 @@ export class WatchService {
 
     public list(): Observable<any> {
         let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.deviceuuid);
-        console.log("calling url: " + url);
-        var response = this.http.get(url).map(res => res.json());
+        //console.log("calling url: " + url);
+        //var response = this.http.get(url).map(res => res.json());
+        var response = this.http.get(url).map(
+            (res) => {
+                let results = res.json().results;
+                let watches = [];
+                for(let result of results) {
+                    if( result.hasOwnProperty('watchinventories') ) {
+                        result.watchinventories = [];
+                    }
+                    watches.push(result);
+                }
+                return watches;
+            }
+        );
         return response;
     }
 
     public delete(id: number): Observable<any> {
         let url = 'https://api-classicjunk.sigmaprojects.org/watch/deleteWatch/format/json/device_id/' + encodeURI(this.deviceuuid) + '/id/' + encodeURI(id.toString());
-        console.log("calling url: " + url);
+        //console.log("calling url: " + url);
         var response = this.http.get(url).map(res => res.json());
         return response;
     }
@@ -111,7 +124,7 @@ export class WatchService {
         '/lng/' + encodeURI(lng.toString()) +
         '/zipcode/' + encodeURI(zipcode.toString())
         ;
-        console.log("calling url: " + url);
+        //console.log("calling url: " + url);
         var response = this.http.get(url).map(res => res.json());
         return response;
     }
@@ -150,7 +163,7 @@ export class WatchService {
         '/lng/' + encodeURI(lng.toString()) +
         '/zipcode/' + encodeURI(zipcode.toString())
         ;
-        console.log("calling url: " + url);
+        //console.log("calling url: " + url);
         var response = this.http.get(url).map(res => res.json());
         return response;
     }

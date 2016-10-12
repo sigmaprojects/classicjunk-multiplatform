@@ -84,8 +84,8 @@ export class ClassicJunkApp {
             console.log("device token ->", data.registrationId);
             this.fcmService.register(data.registrationId).subscribe(
                 regResults => {
-                    console.log('subscribe register fcm returned');
-                    console.log(JSON.stringify(regResults));
+                    //console.log('subscribe register fcm returned');
+                    //console.log(JSON.stringify(regResults));
                 },
                 (err) => {
                     /*
@@ -101,7 +101,7 @@ export class ClassicJunkApp {
         push.on('notification', (data) => {
             console.log('notification message', data.message);
             //console.log(JSON.stringify(data));
-            let self = this;
+
             //if user using app and push notification comes
             if (data.additionalData.foreground) {
                 // if application open, show popup
