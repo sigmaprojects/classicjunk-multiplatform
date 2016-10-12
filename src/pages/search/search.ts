@@ -36,7 +36,7 @@ export class Search {
   }
 
   ngOnInit() {
-    //console.log('oninitfired');
+    console.log('oninitfired');
     this.showAlert();
   }
 

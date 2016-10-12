@@ -34,7 +34,7 @@ export class FCMService {
     register(regid): Observable<any> {
         let device_id = this.keyValService.getDeviceUuid();
         let url = 'https://api-classicjunk.sigmaprojects.org/device/register/?device_id=' + encodeURI(device_id) + '&registration_id=' + encodeURI(regid) + '&platform=' + encodeURI(this.platformString);
-        //console.log("FCM Calling URL: " + url);
+        console.log("FCM Calling URL: " + url);
         var response = this.http.get(url).map(res => res.json());
         return response;
     }
