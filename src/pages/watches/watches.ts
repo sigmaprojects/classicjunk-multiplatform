@@ -93,18 +93,18 @@ export class Watches {
     this.keyValService.get(KeyValService.PositionCoordsKey).then(
       (coords) => {
 
-        let modal: Alert;
+        //let modal: Alert;
         if (watch == null) {
-          modal = this.getEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
+          this.showEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
             (watchData) => { this.saveWatch(watchData); }
           );
         } else {
-          modal = this.getEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
+          this.showEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
             (watchData) => { this.saveWatch(watchData); }
           );
         }
 
-        modal.present();
+        //modal.present();
       },
       (error) => {
         //console.error('Error getting coords', error);
@@ -190,7 +190,7 @@ export class Watches {
     alert.present();
   }
 
-    private getEditModal(
+    private showEditModal(
         id: any,
         label: string,
         year_start: any,
@@ -199,7 +199,7 @@ export class Watches {
         lng: any,
         zipcode: any,
         handler: any
-        ): Alert {
+        ): void {
 
         let title = "Edit Alert";
         if(id == 0) {
@@ -285,7 +285,8 @@ export class Watches {
             inputs: inputs,
             buttons: buttons
         });
-        return editModal;
+        editModal.present();
+        //return editModal;
     } 
 
     private showLoading(content: string): void {
