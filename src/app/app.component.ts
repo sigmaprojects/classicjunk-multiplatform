@@ -47,13 +47,22 @@ export class ClassicJunkApp {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
+
+            setTimeout(function () {
+                this.start();
+            }, 1500);
+            
+            
             try {
-                this.pushSetup();
+                setTimeout(function () {
+                    this.pushSetup();
+                }, 3000);
             } catch(e) {
                 console.log("Error setting up Push");
                 console.log(JSON.stringify(e));
             }
-            this.start();
+
+            //this.start();
             //navigator.splashscreen.hide();
         });
     }
