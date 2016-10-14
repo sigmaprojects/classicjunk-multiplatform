@@ -99,6 +99,7 @@ export class ClassicJunkApp {
                 iconColor: "#c94545"
             },
             ios: {
+                senderID: "352912943392",
                 alert: "true",
                 badge: false,
                 sound: "true"
