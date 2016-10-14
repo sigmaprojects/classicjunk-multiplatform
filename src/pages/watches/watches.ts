@@ -66,8 +66,7 @@ export class Watches {
       let stub = {
         year_start: '',
         year_end: '',
-        label: 'No alerts setup yet.',
-        id: -1
+        label: 'No alerts setup yet.'
       };
       w.push(stub);
     }
@@ -75,36 +74,31 @@ export class Watches {
   }
 
 
-  public editTapped(event,i): void {
-    let watch = this.watches[i];
+  public editTapped(event,watch): void {
 
-    console.log("edit tapped; i: " + i);
-    console.log(JSON.stringify(watch));
+    //console.log(JSON.stringify(watch));
 
-    if( typeof i == 'number' && watch.id == -1 ) {
-      console.log("editTapped returning");
+    if( watch != null && !watch.hasOwnProperty("id") ) {
       return;
-    }
-    
-    if(typeof i == 'string') {
-      watch = null;
     }
 
     this.keyValService.get(KeyValService.PositionCoordsKey).then(
       (coords) => {
 
-        //let modal: Alert;
+        //console.log("got coords back from keyval");
+
+        let modal: Alert;
         if (watch == null) {
-          this.showEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
+          modal = this.getEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
             (watchData) => { this.saveWatch(watchData); }
           );
         } else {
-          this.showEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
+          modal = this.getEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
             (watchData) => { this.saveWatch(watchData); }
           );
         }
 
-        //modal.present();
+        modal.present();
       },
       (error) => {
         //console.error('Error getting coords', error);
@@ -190,7 +184,7 @@ export class Watches {
     alert.present();
   }
 
-    private showEditModal(
+    private getEditModal(
         id: any,
         label: string,
         year_start: any,
@@ -199,7 +193,7 @@ export class Watches {
         lng: any,
         zipcode: any,
         handler: any
-        ): void {
+        ): Alert {
 
         let title = "Edit Alert";
         if(id == 0) {
@@ -285,8 +279,7 @@ export class Watches {
             inputs: inputs,
             buttons: buttons
         });
-        editModal.present();
-        //return editModal;
+        return editModal;
     } 
 
     private showLoading(content: string): void {

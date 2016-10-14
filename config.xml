@@ -3,7 +3,7 @@
   <name>ClassicJunk</name>
   <description>ClassicJunk, find your part.</description>
   <author email="apps@sigmaprojects.org" href="https://classicjunk.sigmaprojects.org/">Sigma Projects</author>
-  <content src="index.html"/>
+  <content src="http://192.168.1.100:8100" original-src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>

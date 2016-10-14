@@ -56,7 +56,7 @@ export class Search {
         //console.log('lastSearchParams?');
         //console.log(JSON.stringify(lastSearchParams));
 
-        this.searchModal.show(
+        let modal = this.searchModal.getSearchModal(
           lastSearchParams,
           (searchProperties) => {
 
@@ -95,7 +95,7 @@ export class Search {
               );
 
           });
-        //modal.present();
+        modal.present();
 
       },
       (error) => {

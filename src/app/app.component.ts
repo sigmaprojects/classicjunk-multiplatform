@@ -44,15 +44,18 @@ export class ClassicJunkApp {
 
     initializeApp() {
         this.platform.ready().then(() => {
+            console.log("Platform ready");
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
-            this.start();
 
             try {
                 this.pushSetup();
             } catch(e) {}
+
+
+            this.start();
 
             /*
             setTimeout(function () {

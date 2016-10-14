@@ -9,10 +9,10 @@ export class SearchModal {
         ) {
     }
 
-    public show(
+    public getSearchModal(
         searchParams: any,
         handler: any
-        ): void {
+        ): Alert {
 
         //let inputs: Array<{ name: string, placeholder: string, type: string, value: string }> = new Array();
         let inputs = new Array();
@@ -77,8 +77,7 @@ export class SearchModal {
                 }
             ]
         });
-        searchModal.present();
-        //return searchModal;
+        return searchModal;
     } 
 
 }
