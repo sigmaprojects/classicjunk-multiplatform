@@ -48,6 +48,13 @@ export class ClassicJunkApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
+            this.start();
+
+            try {
+                this.pushSetup();
+            } catch(e) {}
+
+            /*
             setTimeout(function () {
                 this.start();
             }, 1500);
@@ -61,6 +68,7 @@ export class ClassicJunkApp {
                 console.log("Error setting up Push");
                 console.log(JSON.stringify(e));
             }
+            */
 
             //this.start();
             //navigator.splashscreen.hide();
