@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, Platform } from 'ionic-angular';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
@@ -16,12 +16,26 @@ export class InventoryModal {
   constructor(
     public params: NavParams,
     public viewCtrl: ViewController,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private platform: Platform
   ) {
     console.log('modal constructor');
     this.inventory = params.get("inventory");
 
-    this.addressUrl = sanitizer.bypassSecurityTrustUrl('geo:0,0?q='+this.inventory.location.address);
+    let mapHref = '';
+    if (this.platform.is('ios')) {
+      mapHref = 'maps://maps.apple.com/?daddr='
+    } else if (this.platform.is('android')) {
+      mapHref = 'geo:0,0?q=';
+    } else if (this.platform.is('windows')) {
+      mapHref = 'geo:0,0?q=';
+    } else if (this.platform.is('browser')) {
+      mapHref = 'geo:0,0?q=';
+    } else {
+      mapHref = 'geo:0,0?q=';
+    }
+
+    this.addressUrl = sanitizer.bypassSecurityTrustUrl(mapHref+this.inventory.location.address);
 
     this.phoneUrl = sanitizer.bypassSecurityTrustUrl('tel:'+this.inventory.location.phonenumber);
 

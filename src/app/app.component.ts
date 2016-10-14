@@ -49,14 +49,20 @@ export class ClassicJunkApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
+            this.keyvalService.setDefaultObjects();
 
-            try {
-                this.pushSetup();
-            } catch(e) {}
+            let self = this;
 
+            setTimeout(function () {
+                self.start();
 
-            this.start();
+                try {
+                    self.pushSetup();
+                } catch(e) {}
 
+            }, 2000);
+
+            
             /*
             setTimeout(function () {
                 this.start();

@@ -18,7 +18,7 @@ export class KeyValService {
                 console.log(JSON.stringify(finished));
             });
             */
-        this.setDefaultObjects();
+        //this.setDefaultObjects();
     }
  
     public getDeviceUuid(): string {
@@ -66,7 +66,7 @@ export class KeyValService {
     }
 
 
-    private setDefaultObjects() {
+    public setDefaultObjects() {
         this.get(KeyValService.LastSearchParamsKey).then(
             (data) => {//we good
             },
@@ -76,6 +76,19 @@ export class KeyValService {
                     yearStart: '',
                     yearEnd: '',
                     zipcode: '',
+                    latitude: '',
+                    longitude: ''
+                }).then(
+                    (setted) => {
+                    },
+                    (errr) => { });
+            });
+            
+        this.get(KeyValService.PositionCoordsKey).then(
+            (data) => {//we good
+            },
+            (err) => {
+                this.set(KeyValService.PositionCoordsKey, {
                     latitude: '',
                     longitude: ''
                 }).then(

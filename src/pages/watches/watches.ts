@@ -106,6 +106,10 @@ export class Watches {
     );
   }
 
+  private showEditWatch(watch,modal,coords) {
+    
+  }
+
   public saveWatch(watchData): void {
     //console.log("got watch data?");
     //console.log(JSON.stringify(watchData));
