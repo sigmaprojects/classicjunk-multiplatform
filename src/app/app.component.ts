@@ -20,7 +20,7 @@ export class ClassicJunkApp {
 
     rootPage: any = NotificationsPage;
 
-    pages: Array<{ title: string, component: any }>;
+    pages: Array<{ title: string, component: any, icon: string }>;
 
     constructor(
         public platform: Platform,
@@ -35,9 +35,9 @@ export class ClassicJunkApp {
 
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Notifications', component: NotificationsPage },
-            { title: 'Set Alerts', component: Watches },
-            { title: 'Search', component: Search }
+            { title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' },
+            { title: 'Set Alerts', component: Watches, icon: 'ios-alert-outline' },
+            { title: 'Search', component: Search, icon: 'ios-search-outline' }
         ];
 
     }

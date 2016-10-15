@@ -1,5 +1,9 @@
 page-watches {
-    background: url('/assets/bg_accept.png') no-repeat right bottom fixed; 
+    //background: url('/assets/bg_accept.png') no-repeat right bottom fixed;
+    @extend %bg-alert;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
     -webkit-background-size: 25%;
     -moz-background-size: 25%;
     background-size: 25%;

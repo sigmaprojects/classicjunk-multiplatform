@@ -1,5 +1,9 @@
 page-search {
-    background: url('/assets/bg_search.png') no-repeat right bottom fixed; 
+    //background: url('/assets/bg_search.png') no-repeat right bottom fixed;
+    @extend %bg-search;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     -webkit-background-size: 25%;
     -moz-background-size: 25%;
     background-size: 25%;
