@@ -100,9 +100,10 @@ export class ClassicJunkApp {
             },
             ios: {
                 senderID: "352912943392",
-                alert: "true",
-                badge: false,
-                sound: "true"
+                "sound": "true",
+                "alert": "true",
+                "badge": "false",
+                "clearBadge": "true"
             },
             windows: {}
         });
@@ -127,7 +128,7 @@ export class ClassicJunkApp {
         });
         push.on('notification', (data) => {
             console.log('notification message', data.message);
-            //console.log(JSON.stringify(data));
+            console.log(JSON.stringify(data));
 
             //if user using app and push notification comes
             if (data.additionalData.foreground) {
@@ -155,6 +156,12 @@ export class ClassicJunkApp {
                 this.nav.setRoot(NotificationsPage);
                 //console.log("Push notification clicked");
             }
+            push.finish(function() {
+                console.log('accept callback finished');
+            }, function() {
+                console.log('accept callback failed');
+            }, data.additionalData.notId);
+
         });
         push.on('error', (e) => {
             console.log('push.On error: ' + e.message);
