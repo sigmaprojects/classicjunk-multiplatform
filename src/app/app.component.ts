@@ -103,7 +103,8 @@ export class ClassicJunkApp {
                 "sound": "true",
                 "alert": "true",
                 "badge": "false",
-                "clearBadge": "true"
+                "clearBadge": "true",
+                "gcmSandbox": "true"
             },
             windows: {}
         });
