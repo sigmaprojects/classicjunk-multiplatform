@@ -7,7 +7,8 @@ import { InventoryModal } from '../pages/inventory-modal/inventory-modal';
 import { Watches } from '../pages/watches/watches';
 
 import { SearchOptionsPage } from '../pages/search/search.options';
-import { NotificationsOptionsPage } from '../pages/notifications/notifications.options';  
+import { NotificationsOptionsPage } from '../pages/notifications/notifications.options';
+
 @NgModule({
   declarations: [
     ClassicJunkApp,

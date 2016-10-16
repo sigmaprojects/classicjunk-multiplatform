@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, Platform } from 'ionic-angular';
+import { NavParams, ViewController, Platform, ActionSheetController } from 'ionic-angular';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {SocialSharing} from 'ionic-native';
 
 @Component({
   selector: 'inventory-modal',
@@ -10,18 +11,23 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 export class InventoryModal {
 
   inventory;
+  caller: any;
+
   addressUrl: SafeUrl;
   phoneUrl: SafeUrl;
   placeholderimg: string = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKRJREFUeNrs0QENAAAIwzDAv+djg5BOwtpJSncaC4AICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAICBABASIgQAQEiIAAERABASIgQATkeyvAAPvNA8UTegMeAAAAAElFTkSuQmCC';
+
 
   constructor(
     public params: NavParams,
     public viewCtrl: ViewController,
     private sanitizer: DomSanitizer,
-    private platform: Platform
+    private platform: Platform,
+    private actionSheetCtrl: ActionSheetController
   ) {
     console.log('modal constructor');
     this.inventory = params.get("inventory");
+    this.caller = params.get("caller");
 
     let mapHref = '';
     if (this.platform.is('ios')) {
@@ -47,11 +53,127 @@ export class InventoryModal {
     
   }
 
-  dismiss() {
+  public swipeEvent(e): void {
+    try {
+      switch (e.direction) {
+        case 2: {
+          console.log("DIRECTION_LEFT");
+          this.dismiss();
+          this.caller.showNext();
+          break;
+        }
+        case 4: {
+          console.log("DIRECTION_RIGHT");
+          this.dismiss();
+          this.caller.showPrevious();
+          break;
+        }
+      }
+    } catch (e) {
+      console.log(JSON.stringify(e));
+    }
+  }
+
+
+  public showActionSheetShare(inventory): void {
+    //socialsharing.share('Optional message', 'Optional title', 'https://www.google.nl/images/srpr/logo4w.png', null)
+    /*
+    SocialSharing.share("Genral Share Sheet",null,null,"http://pointdeveloper.com")
+    .then(()=>{
+        alert("Success");
+      },
+      ()=>{
+         alert("failed")
+      })
+      */
+    let shareString = "Found a " + inventory.caryear + " " + inventory.car + " using the Classic Junk app. It's located " + inventory.location.address + "." + 
+      "#ClassicJunk #ClassicJunkApp #SigmaProjects #" + inventory.car;
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Share via...',
+      cssClass: 'share-action-sheets',
+      buttons: [
+        {
+          text: 'Post to Instagram',
+          icon: 'logo-instagram',
+          handler: () => {
+            console.log('instagram clicked');
+            SocialSharing.shareViaInstagram(shareString,inventory.imageurl).then(
+              (success)=>{
+                //alert("Success");
+              },
+              (fail)=>{
+                //alert("failed")
+            });
+            actionSheet.dismiss();
+          }
+        },
+        {
+          text: 'Post to Facebook',
+          icon: 'logo-facebook',
+          handler: () => {
+            console.log('facebook clicked');
+            SocialSharing.shareViaFacebook(shareString,inventory.imageurl).then(
+              (success)=>{
+                //alert("Success");
+              },
+              (fail)=>{
+                //alert("failed")
+            });
+            actionSheet.dismiss();
+          }
+        },
+        {
+          text: 'Send Message',
+          icon: 'ios-text',
+          handler: () => {
+            console.log('send message clicked');
+             SocialSharing.shareViaSMS(shareString, null).then(
+              (success)=>{
+                //alert("Success");
+              },
+              (fail)=>{
+                //alert("failed")
+            });
+            actionSheet.dismiss();
+          }
+        },
+        {
+          text: 'Send Mail',
+          icon: 'ios-mail',
+          handler: () => {
+            console.log('send mail clicked');
+             SocialSharing.shareViaEmail(shareString, "Found the car", [""], [""], [""], inventory.imageurl).then(
+              (success)=>{
+                //alert("Success");
+              },
+              (fail)=>{
+                //alert("failed")
+            });
+            actionSheet.dismiss();
+          }
+        },
+        {
+          text: 'Cancel',
+          icon: 'ios-arrow-down',
+          handler: () => {
+            actionSheet.dismiss();
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
+  }
+
+
+  public dismiss(): void {
     this.viewCtrl.dismiss();
   }
 
-  close(event) {
+
+  public close(event): void {
     /*
     console.log(JSON.stringify(event));
     console.log(event.target);
@@ -69,7 +191,8 @@ export class InventoryModal {
     }
   }
 
-  formatPhone(text: string) {
+
+  public formatPhone(text: string): string {
     if (text.toString().length < 3) {
       return text;
     } else if (text.toString().length == 11) {

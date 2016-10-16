@@ -14,8 +14,8 @@
 
 <ion-content>
   
-  <ion-list [virtualScroll]="inventories" [approxItemHeight]="'60px'">
-    <ion-item *virtualItem="let inventory; let i = index;" (click)="itemTapped($event, i)">
+  <ion-list [virtualScroll]="inventories" [approxItemHeight]="'60px'" no-lines>
+    <ion-item *virtualItem="let inventory; let i = index;" (click)="itemTapped(i)">
       <h4>{{inventory.caryear}} {{inventory.car}}</h4>
       <p>{{inventory.timeago}}</p>
       <h3 item-right>{{inventory.location.label}}</h3>

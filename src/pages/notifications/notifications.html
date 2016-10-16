@@ -18,7 +18,7 @@
   <ion-list>
     <ion-item *ngFor="let wi of watchInventories" (click)="itemTapped($event, wi)">
 -->
-  <ion-list [virtualScroll]="watchInventories" [approxItemHeight]="'60px'">
+  <ion-list [virtualScroll]="watchInventories" [approxItemHeight]="'60px'" no-lines>
     <ion-item *virtualItem="let wi; let i = index;" (click)="itemTapped($event, i)">
       <h4>{{wi.inventory.caryear}} {{wi.inventory.car}}</h4>
       <p>{{wi.timeago}}</p>

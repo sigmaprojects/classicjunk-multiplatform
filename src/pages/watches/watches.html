@@ -13,10 +13,9 @@
   <ion-list padding>
     <ion-item *ngFor="let watch of watches" (click)="editTapped($event, watch)">
 -->
-  <ion-list [virtualScroll]="watches" [approxItemHeight]="'60px'">
+  <ion-list [virtualScroll]="watches" [approxItemHeight]="'60px'" no-lines>
     <ion-item *virtualItem="let watch; let i = index;" (click)="editTapped($event, watch)">
       {{watch.year_start}} &nbsp; {{watch.year_end}} &nbsp; {{watch.label}}
-
     </ion-item>
   </ion-list>
 

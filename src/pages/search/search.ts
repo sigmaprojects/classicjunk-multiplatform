@@ -16,6 +16,8 @@ import { SearchModal } from './searchmodal';
 export class Search {
 
   inventories: any;
+  inventoryModal: any;
+  showingIndex: number;
 
   optionsPopover: Popover;
 
@@ -34,6 +36,7 @@ export class Search {
     //let invs = navParams.get('inventories');
     //this.setInventories(invs);
     console.log("Search constructor");
+    this.showingIndex = -1;
   }
 
   ngOnInit() {
@@ -138,17 +141,50 @@ export class Search {
     return this.inventories;
   }
 
-  itemTapped(event, i) {
-    //console.log("got this far");
+  public itemTapped(i): void {
     let inventory = this.inventories[i];
     if (!inventory.hasOwnProperty('id')) {
+      this.showingIndex = -1;
       return;
     }
-    let modal = this.modalCtrl.create(
+
+    try {
+      this.inventoryModal.dismiss();
+    } catch(e) {}
+    this.inventoryModal = null;
+
+    this.inventoryModal = this.modalCtrl.create(
       InventoryModal,
-      { inventory: inventory }
+      {
+        inventory:  inventory,
+        caller:     this
+      }
     );
-    modal.present();
+    this.inventoryModal.present();
+
+    this.showingIndex = i;
+  }
+
+  public showPrevious(): void {
+    let n = (this.showingIndex-1);
+    console.log('showPrevious: ' + n);
+    console.log('first: ' + (this.showingIndex > -1));
+    console.log('second: ' + (this.inventories.length <= n));
+    
+    if( this.showingIndex > -1 && n >= 0 ) {
+      this.itemTapped(n);
+    }
+  }
+
+  public showNext(): void {
+    let n = (this.showingIndex+1);
+    console.log('showNext: ' + n);
+    console.log('first: ' + (this.showingIndex > -1));
+    console.log('second: ' + (this.inventories.length >= n));
+    
+    if( this.showingIndex > -1 && this.inventories.length >= n ) {
+      this.itemTapped(n);
+    }
   }
 
   public presentPopover(ev): void {

@@ -1,48 +1,52 @@
 <ion-header (click)="close($event)">
-  <ion-toolbar>
-    <ion-title>
-      {{inventory.caryear}} {{inventory.car}}
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
+	<ion-toolbar>
+		<ion-title>
+			{{inventory.caryear}} {{inventory.car}}
+		</ion-title>
+		<ion-buttons start>
+			<button ion-button (click)="dismiss()">
         <span color="primary" showWhen="ios">Close</span>
         <ion-icon name="md-close" showWhen="android,windows,browser"></ion-icon>
       </button>
-    </ion-buttons>
-  </ion-toolbar>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content (click)="close($event)">
-  <ion-list>
-      <ion-item text-wrap>
-        <!--
-        <img src="{{inventory.imageurl}}">
-        -->
-        <img (load)="$event.target.src=inventory.imageurl" src="inventory.imageurl" [src]="placeholderimg" />
-        <h2>
-            <!--<a href="geo:0,0?q={{inventory.location.address}}">{{inventory.location.address}}</a>-->
-            <a [href]="addressUrl">{{inventory.location.address}}</a>
-        </h2>
-        <br />
-        <h2>
-          <!--<a href="tel:{{inventory.location.phonenumber}}">{{inventory.location.phonenumber}}</a>-->
-          <a [href]="phoneUrl">{{inventory.location.phonenumber}}</a>
-        </h2>
-      </ion-item>
-  </ion-list>
+<!--
+   (click)="close($event)"
+-->
+<ion-content>
+	<div padding text-wrap (swipe)="swipeEvent($event)">
+		<img (load)="$event.target.src=inventory.imageurl" src="inventory.imageurl" [src]="placeholderimg" />
+
+    <h6>
+		<a [href]="addressUrl">{{inventory.location.address}}</a>
+    </h6>
+		
+    <h6>
+		<a [href]="phoneUrl">{{inventory.location.phonenumber}}</a>
+    </h6>
+	</div>
+
 </ion-content>
 
-<!--
-<ion-card>
-  <img src="{{inventory.imageurl}}"/>
-  <ion-card-content>
-    <ion-card-title>
-      {{inventory.caryear}} {{inventory.car}}
-      </ion-card-title>
-    <p>
-      <h2>{{inventory.location.address}}</h2>
-      <h2>{{inventory.location.phonenumber}}</h2>
-    </p>
-  </ion-card-content>
-</ion-card>
--->
+<ion-footer>
+
+	<ion-toolbar>
+		<ion-buttons>
+			<button ion-button (click)="swipeEvent({direction:2})">
+        <ion-icon name="ios-arrow-up-outline"></ion-icon>
+      </button> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+			<button ion-button (click)="swipeEvent({direction:4})">
+        <ion-icon name="ios-arrow-down-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+ 			<button ion-button (click)="showActionSheetShare(inventory)">
+        <ion-icon name="ios-share-alt-outline"></ion-icon>Share
+      </button>
+
+		</ion-buttons>
+	</ion-toolbar>
+
+</ion-footer>

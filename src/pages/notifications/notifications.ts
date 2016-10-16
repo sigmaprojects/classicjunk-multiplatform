@@ -21,6 +21,9 @@ export class NotificationsPage {
   optionsPopover: Popover;
   watchInventories: any;
 
+  inventoryModal: any;
+  showingIndex: number;
+
   constructor(
     public navCtrl: NavController,
     public keyValService: KeyValService,
@@ -38,17 +41,53 @@ export class NotificationsPage {
     this.fetch();
   }
 
-  itemTapped(event, i) {
+  itemTapped(i) {
     let wi = this.watchInventories[i];
      if( !wi.hasOwnProperty('id') ) {
+       this.showingIndex = -1;
       return;
     }
-    let modal = this.modalCtrl.create(
+    try {
+      this.inventoryModal.dismiss();
+    } catch(e) {}
+    this.inventoryModal = null;
+
+    this.inventoryModal = this.modalCtrl.create(
       InventoryModal,
-      { inventory: wi.inventory }
+      {
+        inventory:  wi.inventory,
+        caller:     this
+      }
     );
-    modal.present();
+    this.inventoryModal.present();
+
+    this.showingIndex = i;
+    
   }
+
+
+  public showPrevious(): void {
+    let n = (this.showingIndex-1);
+    console.log('showPrevious: ' + n);
+    console.log('first: ' + (this.showingIndex > -1));
+    console.log('second: ' + (this.watchInventories.length <= n));
+    
+    if( this.showingIndex > -1 && n >= 0 ) {
+      this.itemTapped(n);
+    }
+  }
+
+  public showNext(): void {
+    let n = (this.showingIndex+1);
+    console.log('showNext: ' + n);
+    console.log('first: ' + (this.showingIndex > -1));
+    console.log('second: ' + (this.watchInventories.length >= n));
+    
+    if( this.showingIndex > -1 && this.watchInventories.length >= n ) {
+      this.itemTapped(n);
+    }
+  }
+
 
   public fetch(): void {
     this.showLoading("Loading...");
