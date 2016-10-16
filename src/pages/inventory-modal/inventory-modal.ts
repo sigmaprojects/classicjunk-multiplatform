@@ -86,8 +86,8 @@ export class InventoryModal {
          alert("failed")
       })
       */
-    let shareString = "Found a " + inventory.caryear + " " + inventory.car + " using the Classic Junk app. It's located " + inventory.location.address + "." + 
-      "#ClassicJunk #ClassicJunkApp #SigmaProjects #" + inventory.car;
+    let shareString = "Found a " + inventory.caryear + " " + inventory.car + " using the Classic Junk app. \n\n It's located at " + inventory.location.address + "." + 
+      "\n\n #ClassicJunk #ClassicJunkApp #SigmaProjects #" + inventory.car.replace(/\s/g, ' #');
 
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Share via...',
@@ -114,6 +114,21 @@ export class InventoryModal {
           handler: () => {
             console.log('facebook clicked');
             SocialSharing.shareViaFacebook(shareString,inventory.imageurl).then(
+              (success)=>{
+                //alert("Success");
+              },
+              (fail)=>{
+                //alert("failed")
+            });
+            actionSheet.dismiss();
+          }
+        },
+        {
+          text: 'Post to Twitter',
+          icon: 'logo-twitter',
+          handler: () => {
+            console.log('twitter clicked');
+            SocialSharing.shareViaTwitter(shareString,inventory.imageurl).then(
               (success)=>{
                 //alert("Success");
               },

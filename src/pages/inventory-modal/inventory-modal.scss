@@ -11,6 +11,14 @@ inventory-modal ion-footer span.button-inner {
     color: #387ef5;
 }
 
+inventory-modal ion-footer .toolbar-background-md {
+    background: #fff;
+}
+
+inventory-modal .footer-md::before {
+    background: #fff;
+}
+
 .share-action-sheets {
 
     button span {
