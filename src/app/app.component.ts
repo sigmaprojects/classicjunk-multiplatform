@@ -81,6 +81,11 @@ export class ClassicJunkApp {
 
             //this.start();
             //navigator.splashscreen.hide();
+
+            if(this.platform.is('android')) {
+                this.setupAds();
+            }
+
         });
     }
 
@@ -200,6 +205,31 @@ export class ClassicJunkApp {
         );
 
         //console.log("started???-");
+    }
+
+    private setupAds(): void {
+            interface AdMobType {
+                banner: string,
+                interstitial: string
+            };
+
+            var admobid: AdMobType;
+
+            // select the right Ad Id according to platform
+            admobid = { // for Android
+                banner: 'ca-app-pub-1023269354859119/9925511785',
+                interstitial: 'ca-app-pub-1023269354859119/8448778586'
+            };
+
+            if (AdMob) {
+                console.log("showing ads");
+                AdMob.createBanner({
+                    adId: admobid.banner,
+                    //isTesting: true,//comment this out before publishing the app
+                    autoShow: true
+                });
+                AdMob.showInterstitial();
+            }
     }
 
 }

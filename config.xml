@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="org.sigmaprojects.ClassicJunk" version="28.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.sigmaprojects.ClassicJunk" version="28.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ClassicJunk</name>
   <description>ClassicJunk, find your part.</description>
   <author email="apps@sigmaprojects.org" href="https://classicjunk.sigmaprojects.org/">Sigma Projects</author>

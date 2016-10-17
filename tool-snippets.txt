@@ -2,9 +2,9 @@ curl -X POST --header "Authorization: key=AIzaSyDrRbclmRnoXJ8wPmVO97WRlHTGVVMNyI
 
 ionic build android --release
 
-C:\Users\don\AppData\Local\Android\sdk\build-tools\24.0.3\zipalign.exe -v 4 .\android-release-unsigned.apk classicjunk-release-unsigned-aligned.apk
-
 C:\PROGRA~1\Java\jdk1.8.0_101\bin\jarsigner.exe -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore c:\android.keystore .\android-release-unsigned.apk ClassicJunk
+
+C:\Users\don\AppData\Local\Android\sdk\build-tools\24.0.3\zipalign.exe -v 4 .\android-release-unsigned.apk classicjunk-release-signed-aligned.apk
 
 
 on ios, the p.list BuildMachineOSBuild needs to be: "15F34" before submitting.
