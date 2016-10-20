@@ -20,7 +20,7 @@
 -->
   <ion-list [virtualScroll]="watchInventories" [approxItemHeight]="'60px'" no-lines>
     <ion-item *virtualItem="let wi; let i = index;" (click)="itemTapped(i)">
-      <h4>{{wi.inventory.caryear}} {{wi.inventory.car}}</h4>
+      <h4 [class.new]="wi.id > lastHighestSeenId">{{wi.inventory.caryear}} {{wi.inventory.car}}</h4>
       <p>{{wi.timeago}}</p>
       <h3 item-right>{{wi.inventory.location.label}}</h3>
     </ion-item>

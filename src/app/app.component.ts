@@ -9,6 +9,8 @@ import { Watches } from '../pages/watches/watches';
 import { KeyValService } from './providers/keyval.service';
 import { FCMService } from './providers/fcm.service';
 
+import {AdMob} from 'ionic-native';
+
 
 @Component({
     templateUrl: 'app.html',
@@ -109,7 +111,7 @@ export class ClassicJunkApp {
                 "alert": "true",
                 "badge": "false",
                 "clearBadge": "true",
-                "gcmSandbox": "true"
+                "gcmSandbox": "false"
             },
             windows: {}
         });
