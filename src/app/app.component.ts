@@ -9,7 +9,7 @@ import { Watches } from '../pages/watches/watches';
 import { KeyValService } from './providers/keyval.service';
 import { FCMService } from './providers/fcm.service';
 
-import {AdMob} from 'ionic-native';
+import { AdMob, AppVersion } from 'ionic-native';
 
 
 @Component({
@@ -84,9 +84,22 @@ export class ClassicJunkApp {
             //this.start();
             //navigator.splashscreen.hide();
 
+            AppVersion.getPackageName().then((p) => {
+                if( p.includes('free') || this.platform.is('android') ) {
+                    console.log("free version, show ads");
+                    console.log(p);
+                    this.setupAds(p);
+                } else {
+                    console.log("non-free, dont setup ads");
+                    console.log(p);
+                }
+            })
+
+            /*
             if(this.platform.is('android')) {
                 this.setupAds();
             }
+            */
 
         });
     }
@@ -209,7 +222,7 @@ export class ClassicJunkApp {
         //console.log("started???-");
     }
 
-    private setupAds(): void {
+    private setupAds(packageName: string): void {
             interface AdMobType {
                 banner: string,
                 interstitial: string
@@ -218,10 +231,21 @@ export class ClassicJunkApp {
             var admobid: AdMobType;
 
             // select the right Ad Id according to platform
-            admobid = { // for Android
-                banner: 'ca-app-pub-1023269354859119/9925511785',
-                interstitial: 'ca-app-pub-1023269354859119/8448778586'
-            };
+            switch(packageName) {
+                case 'org.sigmaprojects.ClassicJunkfree': {
+                    admobid = { // for iOS
+                        banner: 'ca-app-pub-1023269354859119/5769023784',
+                        interstitial: 'ca-app-pub-1023269354859119/8448778586'
+                    };
+                    break;
+                } 
+                default: {
+                    admobid = { // for Android
+                        banner: 'ca-app-pub-1023269354859119/9925511785',
+                        interstitial: 'ca-app-pub-1023269354859119/8448778586'
+                    };
+                }
+            }
 
             if (AdMob) {
                 console.log("showing ads");
