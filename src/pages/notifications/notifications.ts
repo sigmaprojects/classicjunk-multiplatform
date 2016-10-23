@@ -12,8 +12,7 @@ import { NotificationsOptionsPage } from './notifications.options';
 
 @Component({
   selector: 'page-notifications',
-  templateUrl: 'notifications.html',
-  providers: [WatchService]
+  templateUrl: 'notifications.html'
 })
 export class NotificationsPage {
 

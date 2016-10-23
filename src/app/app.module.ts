@@ -9,13 +9,20 @@ import { Watches } from '../pages/watches/watches';
 import { SearchOptionsPage } from '../pages/search/search.options';
 import { NotificationsOptionsPage } from '../pages/notifications/notifications.options';
 
+
+import { KeyValService } from './providers/keyval.service';
+import { FCMService } from './providers/fcm.service';
+import { WatchService } from './providers/watch.service';
+import { CarSearchService } from './providers/search.service';
+import { SearchModal } from '../pages/search/searchmodal';
+
 @NgModule({
   declarations: [
     ClassicJunkApp,
-    NotificationsPage,
+    Watches,
     Search,
     InventoryModal,
-    Watches,
+    NotificationsPage,
     SearchOptionsPage,
     NotificationsOptionsPage
   ],
@@ -25,13 +32,19 @@ import { NotificationsOptionsPage } from '../pages/notifications/notifications.o
   bootstrap: [IonicApp],
   entryComponents: [
     ClassicJunkApp,
+    Watches,
     NotificationsPage,
     Search,
     InventoryModal,
-    Watches,
     SearchOptionsPage,
     NotificationsOptionsPage
   ],
-  providers: []
+  providers: [
+    KeyValService,
+    FCMService,
+    WatchService,
+    SearchModal,
+    CarSearchService
+  ]
 })
 export class AppModule {}

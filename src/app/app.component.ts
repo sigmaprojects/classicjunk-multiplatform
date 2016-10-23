@@ -8,19 +8,21 @@ import { Watches } from '../pages/watches/watches';
 
 import { KeyValService } from './providers/keyval.service';
 import { FCMService } from './providers/fcm.service';
+import { WatchService } from './providers/watch.service';
 
 import { AdMob, AppVersion } from 'ionic-native';
 
 
 @Component({
-    templateUrl: 'app.html',
-    providers: [KeyValService,FCMService]
+    templateUrl: 'app.html'
 })
 export class ClassicJunkApp {
 
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = NotificationsPage;
+    //rootPage: any = NotificationsPage;
+    //rootPage: any = Watches;
+    rootPage: any;
 
     pages: Array<{ title: string, component: any, icon: string }>;
 
@@ -29,7 +31,8 @@ export class ClassicJunkApp {
         public alertCtrl: AlertController,
         private keyvalService: KeyValService,
         public loadingCtrl: LoadingController,
-        public fcmService: FCMService
+        public fcmService: FCMService,
+        private watchService: WatchService
     ) {
         console.log("MyApp Constructor");
 
@@ -37,21 +40,52 @@ export class ClassicJunkApp {
 
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' },
+            //{ title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' },
             { title: 'Set Alerts', component: Watches, icon: 'ios-alert-outline' },
             { title: 'Search', component: Search, icon: 'ios-search-outline' }
         ];
 
+        watchService.alertCreated$.subscribe(
+            val => {
+                console.log('RECEIVED emitted notifyAlertCreated from watch service in app.component');
+                this.addNotificationsMenuItem();
+            }
+        );
+
+    }
+
+    private addNotificationsMenuItem(): void {
+        if( this.pages.length == 2 ) {
+            this.pages.unshift(
+                { title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' }
+            );
+        }
     }
 
     initializeApp() {
         this.platform.ready().then(() => {
+
             console.log("Platform ready");
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
+            // see if this is the first time the app has ran before,
+            // if so hide the notifications menu item and make the Watches page first
+            this.keyvalService.get(KeyValService.HasSetupAlertsBeforeKey).then(
+                (val) => {
+                    console.log("key exists, just adding item");
+                    this.nav.setRoot(NotificationsPage);
+                    this.addNotificationsMenuItem();
+                },
+                (err) => {
+                    this.nav.setRoot(Watches);
+                    console.log('HasSetupAlertsBeforeKey doesnt exist/errored, setting up subscribe');
+                }
+            );
+
             this.keyvalService.setDefaultObjects();
+
 
             let self = this;
 

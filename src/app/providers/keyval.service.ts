@@ -8,6 +8,7 @@ export class KeyValService {
     public static PositionCoordsKey = "PositionCoords";
     public static WatchInventoriesKey = "WatchInventories";
     public static HighestSeenWatchInventoryIdKey = "HighestSeenWatchInventoryId";
+    public static HasSetupAlertsBeforeKey = "HasSetupAlertsBefore";
  
 
     constructor() {

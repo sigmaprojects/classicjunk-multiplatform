@@ -9,8 +9,7 @@ import { WatchService } from '../../app/providers/watch.service';
 
 @Component({
   selector: 'page-watches',
-  templateUrl: 'watches.html',
-  providers: [WatchService]
+  templateUrl: 'watches.html'
 })
 export class Watches {
 
@@ -195,10 +194,12 @@ export class Watches {
         handler: any
         ): Alert {
 
-        let title = "Edit Alert";
+        let title = "Get notified for...";
+        /*
         if(id == 0) {
           title = "New Alert";
         }
+        */
         let inputs = new Array();
         
         inputs.push({

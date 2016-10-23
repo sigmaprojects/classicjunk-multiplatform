@@ -10,8 +10,7 @@ import { SearchModal } from './searchmodal';
 
 @Component({
   selector: 'page-search',
-  templateUrl: 'search.html',
-  providers: [KeyValService, SearchModal, CarSearchService]
+  templateUrl: 'search.html'
 })
 export class Search {
 
