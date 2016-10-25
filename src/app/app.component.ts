@@ -95,7 +95,7 @@ export class ClassicJunkApp {
                     self.pushSetup();
                 } catch(e) {}
 
-            }, 2000);
+            }, 1000);
 
 
             AppVersion.getPackageName().then((p) => {
