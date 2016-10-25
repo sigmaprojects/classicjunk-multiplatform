@@ -47,7 +47,7 @@ export class ClassicJunkApp {
 
         watchService.alertCreated$.subscribe(
             val => {
-                console.log('RECEIVED emitted notifyAlertCreated from watch service in app.component');
+                //console.log('RECEIVED emitted notifyAlertCreated from watch service in app.component');
                 this.addNotificationsMenuItem();
             }
         );
@@ -88,7 +88,6 @@ export class ClassicJunkApp {
 
 
             let self = this;
-
             setTimeout(function () {
                 self.start();
 
@@ -98,25 +97,6 @@ export class ClassicJunkApp {
 
             }, 2000);
 
-            
-            /*
-            setTimeout(function () {
-                this.start();
-            }, 1500);
-            
-            
-            try {
-                setTimeout(function () {
-                    this.pushSetup();
-                }, 3000);
-            } catch(e) {
-                console.log("Error setting up Push");
-                console.log(JSON.stringify(e));
-            }
-            */
-
-            //this.start();
-            //navigator.splashscreen.hide();
 
             AppVersion.getPackageName().then((p) => {
                 if( p.includes('free') || this.platform.is('android') ) {
@@ -128,12 +108,6 @@ export class ClassicJunkApp {
                     console.log(p);
                 }
             })
-
-            /*
-            if(this.platform.is('android')) {
-                this.setupAds();
-            }
-            */
 
         });
     }
@@ -288,7 +262,7 @@ export class ClassicJunkApp {
                     //isTesting: true,//comment this out before publishing the app
                     autoShow: true
                 });
-                AdMob.showInterstitial();
+                //AdMob.showInterstitial();
             }
     }
 
