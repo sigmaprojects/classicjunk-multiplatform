@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, trigger, state, animate, transition, style } from '@angular/core';
 
 import { NavController, AlertController, Alert, LoadingController, Loading } from 'ionic-angular';
 
@@ -9,11 +9,28 @@ import { WatchService } from '../../app/providers/watch.service';
 
 @Component({
   selector: 'page-watches',
-  templateUrl: 'watches.html'
+  templateUrl: 'watches.html',
+  animations: [
+    trigger('visibility', [
+        state('true', style({
+            opacity: 1/*,
+            'line-height': '24px',
+            'height': '24px'
+            */
+        })),
+        state('false', style({
+            opacity: 0,
+            'line-height': '0px',
+            'height': '0px'
+        })),
+        transition('* => *', animate('.5s'))
+    ])
+  ]
 })
 export class Watches {
 
-  loader: Loading;
+  //loader: Loading;
+  loading: boolean;
 
   watches: Array<any>;
 
@@ -24,15 +41,26 @@ export class Watches {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController
   ) {
-    
+    this.loading = true;
   }
 
   ngOnInit() {
-    //console.log('oninitfired');
-    this.fetch();
+    console.log('oninitfired');
+    this.keyValService.get(KeyValService.WatchesListKey).then(
+      (w) => {
+        console.log("setting cached watches");
+        this.setWatches(w);
+        this.fetch();
+      },
+      (err) => {
+        console.log("error getting cached watches");
+        this.fetch();
+      }
+    )
   }
 
   public fetch(): void {
+    console.log('fetching');
     this.showLoading("Loading...");
     this.watchService.list().subscribe(
       watchResults => {
@@ -284,18 +312,24 @@ export class Watches {
     } 
 
     private showLoading(content: string): void {
+      this.loading = true;
+      /*
       this.loader = null;
       this.loader = this.loadingCtrl.create({
         content: content,
         dismissOnPageChange: true
       });
       this.loader.present();
+      */
     }
 
     private hideLoading(): void {
+      this.loading = false;
+      /*
       try {
         this.loader.dismiss();
-      } catch(e) {} 
+      } catch(e) {}
+      */ 
     }
 
 }

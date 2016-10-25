@@ -19,3 +19,15 @@ page-notifications .item-md h4.new {
 page-notifications .item-md, page-notifications .list-md, page-notifications .content-md {
     background-color:transparent;
 }
+
+page-notifications .loading-bar {
+    border-color: #007acc;
+    background-color: #007acc;
+    background-image: linear-gradient(0deg, #007acc, #387ef5 50%, transparent 100%);
+    color: #fff;
+    display: block;
+    height: 24px;
+    text-align: center;
+    padding: 0;
+    line-height: 24px;
+}

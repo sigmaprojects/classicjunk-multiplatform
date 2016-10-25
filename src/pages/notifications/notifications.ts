@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, trigger, state, animate, transition, style } from '@angular/core';
 
 import { NavController, AlertController, LoadingController, Loading, ModalController, PopoverController, Popover } from 'ionic-angular';
 
@@ -12,11 +12,29 @@ import { NotificationsOptionsPage } from './notifications.options';
 
 @Component({
   selector: 'page-notifications',
-  templateUrl: 'notifications.html'
+  templateUrl: 'notifications.html',
+  animations: [
+    trigger('visibility', [
+        state('true', style({
+            opacity: 1/*,
+            'line-height': '24px',
+            'height': '24px'
+            */
+        })),
+        state('false', style({
+            opacity: 0,
+            'line-height': '0px',
+            'height': '0px'
+        })),
+        transition('* => *', animate('.5s'))
+    ])
+  ]
 })
 export class NotificationsPage {
 
   loader: Loading;
+  loading: boolean;
+
   optionsPopover: Popover;
   watchInventories: any;
 
@@ -34,7 +52,8 @@ export class NotificationsPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController
   ) {
-    this.lastHighestSeenId = 0; 
+    this.loading = true;
+    this.lastHighestSeenId = 0;
   }
 
   ngOnInit() {
@@ -43,12 +62,28 @@ export class NotificationsPage {
       (val) => {
         this.lastHighestSeenId = val;
         console.log("keyval get HighestSeenWatchInventoryId: " + val);
+        this.getData();
+        //this.fetch();
+      },
+      (err) => {
+        this.getData();
+        //this.fetch();
+      }
+    );
+  }
+
+  private getData(): void {
+    this.keyValService.get(KeyValService.WatchInventoriesListKey).then(
+      (wi) => {
+        console.log("setting cached watchInventories");
+        this.setWatchInventories(wi);
         this.fetch();
       },
       (err) => {
+        console.log("error getting cached watchInventories");
         this.fetch();
       }
-    );
+    )
   }
 
   itemTapped(i) {
@@ -177,18 +212,24 @@ export class NotificationsPage {
 
 
   private showLoading(content: string): void {
+    this.loading = true;
+    /*
     this.loader = null;
     this.loader = this.loadingCtrl.create({
       content: content,
       dismissOnPageChange: true
     });
     this.loader.present();
+    */
   }
 
   private hideLoading(): void {
+    this.loading = false;
+    /*
     try {
       this.loader.dismiss();
     } catch(e) {}
+    */
   }
 
   public presentPopover(ev): void {

@@ -6,9 +6,11 @@ export class KeyValService {
  
     public static LastSearchParamsKey = "LastSearchParams";
     public static PositionCoordsKey = "PositionCoords";
-    public static WatchInventoriesKey = "WatchInventories";
     public static HighestSeenWatchInventoryIdKey = "HighestSeenWatchInventoryId";
     public static HasSetupAlertsBeforeKey = "HasSetupAlertsBefore";
+
+    public static WatchesListKey = "WatchesList";
+    public static WatchInventoriesListKey = "WatchInventoriesList";
  
 
     constructor() {
@@ -68,6 +70,28 @@ export class KeyValService {
 
 
     public setDefaultObjects() {
+
+        this.get(KeyValService.WatchesListKey).then(
+            (data) => {//we good
+            },
+            (err) => {
+                this.set(KeyValService.WatchesListKey,[]).then(
+                    (setted) => {
+                    },
+                    (errr) => { });
+            });
+
+
+        this.get(KeyValService.WatchInventoriesListKey).then(
+            (data) => {//we good
+            },
+            (err) => {
+                this.set(KeyValService.WatchesListKey,[]).then(
+                    (setted) => {
+                    },
+                    (errr) => { });
+            });
+
         this.get(KeyValService.LastSearchParamsKey).then(
             (data) => {//we good
             },

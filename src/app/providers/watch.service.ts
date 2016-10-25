@@ -40,6 +40,7 @@ export class WatchService {
                 if (watchInventories.length > 0) {
                     this.notifyAlertCreated();
                 }
+                this.keyValService.set(KeyValService.WatchInventoriesListKey,watchInventories);
                 return watchInventories;
             }
         );
@@ -63,6 +64,7 @@ export class WatchService {
                 if (watches.length > 0) {
                     this.notifyAlertCreated();
                 }
+                this.keyValService.set(KeyValService.WatchesListKey,watches);
                 return watches;
             }
         );
