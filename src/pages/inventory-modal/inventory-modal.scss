@@ -1,22 +1,33 @@
+/*
 inventory-modal ion-footer ion-icon{
     font-size: 2.5em;
-    /*color: #387ef5;*/
     color: #fff;
 }
-
 inventory-modal ion-footer button {
-    /*color: #387ef5;*/
     color: #fff;
 }
-
 inventory-modal ion-footer span.button-inner {
-    /*color: #387ef5;*/
     color: #fff;
 }
-
 inventory-modal ion-footer .toolbar-background-md {
-    /*background: #fff;*/
     background: $header-footer-background-color;
+}
+*/
+
+inventory-modal ion-footer {
+    .toolbar-background {
+        background-color: $header-footer-background-color;
+        border-color: $header-footer-border-color;
+    }
+    .toolbar-title {
+        color: #fff;
+    }
+    .bar-button {
+        color: #fff;
+    }
+    ion-icon {
+        font-size: 2.5em;
+    }
 }
 
 inventory-modal .footer-md::before {
