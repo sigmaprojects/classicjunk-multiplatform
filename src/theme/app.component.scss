@@ -25,8 +25,8 @@ ion-header {
         color: #fff;
     }
 }
-ion-header * {
-    color: #fff;
+ion-header, ion-header *, ion-header span *, ion-header button *, ion-header div * {
+    color: #fff !important;
 }
 
 .loading-bar {
