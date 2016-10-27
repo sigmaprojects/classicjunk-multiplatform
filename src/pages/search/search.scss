@@ -13,6 +13,15 @@ page-search .item-md h4 {
     color: #387ef5;
 }
 
+page-search .item {
+    margin: 7px 6px 7px 6px;
+    width: calc(100% - 12px);
+    border-radius: 2px;
+    font-size: 1.4rem;
+    background: #fff;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,.2);
+}
+
 page-search .item-md, page-search .list-md, page-search .content-md {
     background-color:transparent;
 }

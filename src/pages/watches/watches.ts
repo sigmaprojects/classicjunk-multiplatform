@@ -1,6 +1,6 @@
 import { Component, trigger, state, animate, transition, style } from '@angular/core';
 
-import { NavController, AlertController, Alert, LoadingController, Loading } from 'ionic-angular';
+import { NavController, AlertController, Alert, LoadingController, NavParams } from 'ionic-angular';
 
 import { KeyValService } from '../../app/providers/keyval.service';
 
@@ -34,18 +34,36 @@ export class Watches {
 
   watches: Array<any>;
 
+  showCreate: any;
+
   constructor(
     public navCtrl: NavController,
     public keyValService: KeyValService,
     public watchService: WatchService,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private params: NavParams
   ) {
     this.loading = true;
+    /*
+    let showCreate = params.get("showCreate");
+    if( typeof showCreate !== 'undefined' && showCreate !== null ) {
+
+      console.log("show create: " + showCreate);
+    }
+    */
+    this.showCreate = params.get("showCreate");
+    
   }
 
   ngOnInit() {
     console.log('oninitfired');
+
+    if( typeof this.showCreate !== 'undefined' && this.showCreate !== null ) {
+      this.editTapped({},null);
+      console.log("showCreate not null, trigger dialog window");
+    }
+
     this.keyValService.get(KeyValService.WatchesListKey).then(
       (w) => {
         console.log("setting cached watches");

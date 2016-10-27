@@ -4,9 +4,46 @@ ion-modal {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-div.modal-wrapper {
-    width: 75%;
-    height: 75%;
-    margin: 15% auto;
-    bottom: 0;
+@media only screen and (max-width: 767px) {
+    div.modal-wrapper {
+        width: 75%;
+        height: 75%;
+        margin: 15% auto;
+        bottom: 0;
+    }
 }
+
+ion-header {
+    .toolbar-background {
+        background-color: $header-footer-background-color;
+        border-color: $header-footer-border-color;
+    }
+    .toolbar-title {
+        color: #fff;
+    }
+    .bar-button {
+        color: #fff;
+    }
+}
+
+.loading-bar {
+    /*
+    border-color: #f18e3d;
+    background-color: #ff8a00;
+    background-image: linear-gradient(0deg, #ff8a00, #ff971d 50%, transparent 100%);
+    */
+    border-color: #4197ff;
+    background-color: #4197ff;
+    background-image: linear-gradient(0deg, #4197ff, #4197ff 50%, transparent 100%);
+    color: #000;
+    display: block;
+    height: 24px;
+    text-align: center;
+    padding: 0;
+    line-height: 24px;
+}
+
+// colors for alert buttons
+.alert-button {
+    color: $header-footer-background-color !important;
+} 

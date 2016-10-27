@@ -55,9 +55,22 @@ export class NotificationsPage {
     this.loading = true;
     this.lastHighestSeenId = 0;
   }
-
+ 
+ /*
   ngOnInit() {
-    //console.log('oninitfired');
+    console.log('NotificationsPage ngOnInit');
+    this.refreshData();
+  }
+  */
+  
+  ionViewWillEnter() {
+    console.log('NotificationsPage ionViewWillEnter');
+    this.refreshData();
+  }
+
+
+  public refreshData(): void {
+    console.log("refreshData");
     this.keyValService.get(KeyValService.HighestSeenWatchInventoryIdKey).then(
       (val) => {
         this.lastHighestSeenId = val;

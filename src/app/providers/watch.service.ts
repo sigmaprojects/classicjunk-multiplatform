@@ -9,11 +9,11 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class WatchService {
+    /*
     static get parameters() {
         return [[Http, KeyValService]];
     }
-
-    private deviceuuid: string;
+    */
 
     private alertCreatedSource = new Subject<string>();
     public alertCreated$ = this.alertCreatedSource.asObservable();
@@ -22,11 +22,15 @@ export class WatchService {
         private http: Http,
         public keyValService: KeyValService
     ) {
-        this.deviceuuid = keyValService.getDeviceUuid();
+        //this.deviceuuid = keyValService.getDeviceUuid();
+    }
+
+    private getDeviceUuid() {
+        return this.keyValService.getDeviceUuid();
     }
 
     public getWatchInventories(): Observable<any> {
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.deviceuuid);
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.getDeviceUuid());
         console.log("calling url: " + url);
         var response = this.http.get(url).map(
             (res) => {
@@ -48,7 +52,7 @@ export class WatchService {
     }
 
     public list(): Observable<any> {
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.deviceuuid);
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.getDeviceUuid());
         console.log("calling url: " + url);
         //var response = this.http.get(url).map(res => res.json());
         var response = this.http.get(url).map(
@@ -72,7 +76,7 @@ export class WatchService {
     }
 
     public delete(id: number): Observable<any> {
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/deleteWatch/format/json/device_id/' + encodeURI(this.deviceuuid) + '/id/' + encodeURI(id.toString());
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/deleteWatch/format/json/device_id/' + encodeURI(this.getDeviceUuid()) + '/id/' + encodeURI(id.toString());
         console.log("calling url: " + url);
         var response = this.http.get(url).map(res => res.json());
         this.notifyAlertCreated();
@@ -125,7 +129,7 @@ export class WatchService {
             year_end = '';
         }
 
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/updateWatch/format/json/device_id/' + encodeURI(this.deviceuuid) +
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/updateWatch/format/json/device_id/' + encodeURI(this.getDeviceUuid()) +
             '/id/' + encodeURI(id.toString()) +
             '/label/' + encodeURI(label) +
             '/year_start/' + encodeURI(year_start.toString()) +
@@ -165,7 +169,7 @@ export class WatchService {
             year_end = '';
         }
 
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/createwatch/format/json/device_id/' + encodeURI(this.deviceuuid) +
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/createwatch/format/json/device_id/' + encodeURI(this.getDeviceUuid()) +
             '/label/' + encodeURI(label) +
             '/year_start/' + encodeURI(year_start.toString()) +
             '/year_end/' + encodeURI(year_end.toString()) +

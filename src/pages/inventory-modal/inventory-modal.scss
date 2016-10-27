@@ -1,18 +1,22 @@
 inventory-modal ion-footer ion-icon{
     font-size: 2.5em;
-    color: #387ef5;
+    /*color: #387ef5;*/
+    color: #fff;
 }
 
 inventory-modal ion-footer button {
-    color: #387ef5;
+    /*color: #387ef5;*/
+    color: #fff;
 }
 
 inventory-modal ion-footer span.button-inner {
-    color: #387ef5;
+    /*color: #387ef5;*/
+    color: #fff;
 }
 
 inventory-modal ion-footer .toolbar-background-md {
-    background: #fff;
+    /*background: #fff;*/
+    background: $header-footer-background-color;
 }
 
 inventory-modal .footer-md::before {
@@ -20,7 +24,6 @@ inventory-modal .footer-md::before {
 }
 
 .share-action-sheets {
-
     button span {
         color: #387ef5;
     }

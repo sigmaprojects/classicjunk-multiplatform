@@ -64,8 +64,10 @@ export class ClassicJunkApp {
 
     initializeApp() {
         this.platform.ready().then(() => {
-
             console.log("Platform ready");
+
+            this.keyvalService.setDefaultObjects();
+
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
@@ -79,7 +81,7 @@ export class ClassicJunkApp {
                     this.addNotificationsMenuItem();
                 },
                 (err) => {
-                    this.nav.setRoot(Watches);
+                    this.nav.setRoot(Watches,{showCreate: true});
                     console.log('HasSetupAlertsBeforeKey doesnt exist/errored, setting up subscribe');
                 }
             );
@@ -87,6 +89,7 @@ export class ClassicJunkApp {
             this.keyvalService.setDefaultObjects();
 
 
+            /*
             let self = this;
             setTimeout(function () {
                 self.start();
@@ -95,9 +98,13 @@ export class ClassicJunkApp {
                     self.pushSetup();
                 } catch(e) {}
 
-            }, 1000);
+            }, 3000);
+            */
+            this.start();
+            this.pushSetup();
 
 
+            
             AppVersion.getPackageName().then((p) => {
                 if( p.includes('free') || this.platform.is('android') ) {
                     console.log("free version, show ads");
@@ -145,13 +152,11 @@ export class ClassicJunkApp {
                     console.log(JSON.stringify(regResults));
                 },
                 (err) => {
-                    /*
                     console.log("START: FCM Registration Error");
                     console.log(JSON.stringify(err));
                     console.log(err.json()); //gives the object object
                     console.log(JSON.stringify(err.json())); //gives the object object
                     console.log("END: FCM Registration Error");
-                    */
                 }
             );;
         });
@@ -181,15 +186,71 @@ export class ClassicJunkApp {
             } else {
                 //if user NOT using app and push notification comes
                 //TODO: Your logic on click of push notification directly
-                //self.nav.push(NotificationsPage, { message: data.message });
-                this.nav.setRoot(NotificationsPage);
+
+                //let notifIndex = this.nav.indexOf(NotificationsPage);
+                /*
+                console.log("first view count: " + this.nav.length());
+                this.nav.push(NotificationsPage, { message: data.message });
+                console.log("second view count: " + this.nav.length());
+                */
+                if(this.nav.length() == 2) {
+                    this.nav.remove(1, 1);
+                }
+                this.nav.push(NotificationsPage, { message: data.message });
+                //this.nav.insert(2, NotificationsPage);
+
+                console.log("got background notification, moving to page");
+                //this.nav.setRoot(NotificationsPage);
                 //console.log("Push notification clicked");
+                //this.openPage({ title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' });
+                /*
+                this.nav.setRoot(NotificationsPage)
+                    .then(data => {
+                        console.log("setroot promise then");
+                        console.log(data);
+                    }, (error) => {
+                        console.log("setroot promise error");
+                        console.log(error);
+                    })
+                    */
+                    /*
+                    this.watchService.getWatchInventories().subscribe(
+                        (res) => {
+                            console.log("finished fetching watch inventories from notification");
+                            push.finish(function () {
+                                console.log('accept callback finished');
+                            }, function () {
+                                console.log('accept callback failed');
+                            }, data.additionalData.notId);
+                        },
+                        (err) => {
+                            console.log("error fetching watch inventories from notification");
+                            push.finish(function () {
+                                console.log('accept callback finished');
+                            }, function () {
+                                console.log('accept callback failed');
+                            }, data.additionalData.notId);
+                        }
+                    )
+                    */
+                    //this.nav.pop();
+                    /*
+                    this.rootPage = null;
+                    this.nav.setRoot(NotificationsPage);
+                    this.rootPage = NotificationsPage;
+                    */
+                    //location.reload();
+                    //this.nav.popToRoot();
+
+                    
             }
+            
             push.finish(function() {
                 console.log('accept callback finished');
             }, function() {
                 console.log('accept callback failed');
             }, data.additionalData.notId);
+            
 
         });
         push.on('error', (e) => {
@@ -210,19 +271,19 @@ export class ClassicJunkApp {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 };
-                //console.log("onGeoSuccess; Latitude: " + coords.latitude + " Longitude: " + coords.longitude);
+                console.log("onGeoSuccess; Latitude: " + coords.latitude + " Longitude: " + coords.longitude);
                 this.keyvalService.set(KeyValService.PositionCoordsKey, coords).then(
                     () => {
-                        //console.log('Geo found, storing');
+                        console.log('Geo found, storing');
                     },
                     (err) => {
-                        //console.error('Error storing item', error);
+                        console.error('Error storing item', err);
                     }
                 );
 
             },
             (error) => {
-                //console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+                console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
             },
             options
         );
