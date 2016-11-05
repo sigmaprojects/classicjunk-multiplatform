@@ -40,15 +40,31 @@ export class Search {
 
   ngOnInit() {
     console.log('oninitfired');
-    this.showAlert();
+    //this.showAlert();
+
+    let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: true };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let coords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+        this.showAlert(coords);
+      },
+      (err) => {
+        this.showAlert({latitude:null,longitude:null});
+      },
+      options
+    );
   }
 
 
 
-  showAlert() {
+  showAlert(coords) {
     let loader = this.loadingCtrl.create({
       content: "Please wait...",
-      dismissOnPageChange: true
+      dismissOnPageChange: false
     });
 
     //let self = this;
@@ -57,6 +73,8 @@ export class Search {
 
         //console.log('lastSearchParams?');
         //console.log(JSON.stringify(lastSearchParams));
+        lastSearchParams.latitude = coords.latitude;
+        lastSearchParams.longitude = coords.longitude;
 
         let modal = this.searchModal.getSearchModal(
           lastSearchParams,

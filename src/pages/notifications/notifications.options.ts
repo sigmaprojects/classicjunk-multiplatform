@@ -14,7 +14,6 @@ export class NotificationsOptionsPage {
 
     public sortBy(sort): void {
         let wis = this.caller.getWatchInventories();
-
         switch(sort) {
             case 'created': {
                 wis.sort(this.dynamicSort("-created"));
@@ -29,7 +28,7 @@ export class NotificationsOptionsPage {
                 break;
             }
             case 'caryear': {
-                wis.sort(this.dynamicSort("caryear"));
+                wis.sort(this.dynamicSort("inventory.caryear"));
                 break;
             }
         }
@@ -49,6 +48,8 @@ export class NotificationsOptionsPage {
             return result * sortOrder;
         }
     }
+
+  
 
 
 }

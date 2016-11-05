@@ -100,9 +100,12 @@ export class ClassicJunkApp {
 
             }, 3000);
             */
-            this.start();
-            this.pushSetup();
+            //this.start();
+            //this.pushSetup();
 
+            AppVersion.getVersionNumber().then((ver) => {
+                this.pushSetup(ver);
+            })
 
             
             AppVersion.getPackageName().then((p) => {
@@ -126,7 +129,7 @@ export class ClassicJunkApp {
     }
 
 
-    pushSetup() {
+    pushSetup(currentVersion) {
         let push = Push.init({
             android: {
                 senderID: "352912943392",
@@ -143,6 +146,20 @@ export class ClassicJunkApp {
             },
             windows: {}
         });
+        
+        // force an unregister if the app has been updated
+        this.keyvalService.get(KeyValService.LastKnownAppVersionKey).then(
+            (oldVersion) => {
+                if( currentVersion > oldVersion ) {
+                    console.log("calling resetPushSetup due to version bump");
+                    this.resetPushSetup(push,currentVersion);
+                }
+            },
+            (err) => {
+                console.log("calling resetPushSetup due to unknown version");
+                this.resetPushSetup(push,currentVersion);
+            }
+        );
 
         push.on('registration', (data) => {
             console.log("device token ->", data.registrationId);
@@ -176,73 +193,17 @@ export class ClassicJunkApp {
                     }, {
                         text: 'View',
                         handler: () => {
-                            //TODO: Your logic here
-                            //self.nav.push(NotificationsPage);
                             this.nav.setRoot(NotificationsPage);
                         }
                     }]
                 });
                 confirmAlert.present();
             } else {
-                //if user NOT using app and push notification comes
-                //TODO: Your logic on click of push notification directly
-
-                //let notifIndex = this.nav.indexOf(NotificationsPage);
-                /*
-                console.log("first view count: " + this.nav.length());
-                this.nav.push(NotificationsPage, { message: data.message });
-                console.log("second view count: " + this.nav.length());
-                */
                 if(this.nav.length() == 2) {
                     this.nav.remove(1, 1);
                 }
                 this.nav.push(NotificationsPage, { message: data.message });
-                //this.nav.insert(2, NotificationsPage);
-
                 console.log("got background notification, moving to page");
-                //this.nav.setRoot(NotificationsPage);
-                //console.log("Push notification clicked");
-                //this.openPage({ title: 'Notifications', component: NotificationsPage, icon: 'ios-notifications-outline' });
-                /*
-                this.nav.setRoot(NotificationsPage)
-                    .then(data => {
-                        console.log("setroot promise then");
-                        console.log(data);
-                    }, (error) => {
-                        console.log("setroot promise error");
-                        console.log(error);
-                    })
-                    */
-                    /*
-                    this.watchService.getWatchInventories().subscribe(
-                        (res) => {
-                            console.log("finished fetching watch inventories from notification");
-                            push.finish(function () {
-                                console.log('accept callback finished');
-                            }, function () {
-                                console.log('accept callback failed');
-                            }, data.additionalData.notId);
-                        },
-                        (err) => {
-                            console.log("error fetching watch inventories from notification");
-                            push.finish(function () {
-                                console.log('accept callback finished');
-                            }, function () {
-                                console.log('accept callback failed');
-                            }, data.additionalData.notId);
-                        }
-                    )
-                    */
-                    //this.nav.pop();
-                    /*
-                    this.rootPage = null;
-                    this.nav.setRoot(NotificationsPage);
-                    this.rootPage = NotificationsPage;
-                    */
-                    //location.reload();
-                    //this.nav.popToRoot();
-
-                    
             }
             
             push.finish(function() {
@@ -258,12 +219,41 @@ export class ClassicJunkApp {
         });
     }
 
+    resetPushSetup(push, currentVersion) {
+        let self = this;
+        push.unregister(function () {
+            console.log('unregistered successfully');
+            self.keyvalService.set(KeyValService.LastKnownAppVersionKey, currentVersion).then(
+            () => {
+                console.log("storing current app version: " + currentVersion);
+                self.pushSetup(currentVersion);
+            },
+            (err) => {
+                self.pushSetup(currentVersion);
+            }
+        );
+        }, function () {
+            console.log('unregistering failed');
+            self.keyvalService.set(KeyValService.LastKnownAppVersionKey, currentVersion).then(
+            () => {
+                console.log("storing current app version: " + currentVersion);
+                self.pushSetup(currentVersion);
+            },
+            (err) => {
+                self.pushSetup(currentVersion);
+            }
+        );
+        });
+        
+    }
+
+
 
     start() {
 
         //console.log("Device UUID:" + Device.device.uuid);
         //this.keyvalService.set("deviceuuid",Device.device.uuid);
-
+        /*
         let options = { maximumAge: 10000, timeout: 5000, enableHighAccuracy: true };
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -287,7 +277,7 @@ export class ClassicJunkApp {
             },
             options
         );
-
+        */
         //console.log("started???-");
     }
 

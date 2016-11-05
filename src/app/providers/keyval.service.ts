@@ -6,12 +6,13 @@ import { Platform } from 'ionic-angular';
 export class KeyValService {  
  
     public static LastSearchParamsKey = "LastSearchParams";
-    public static PositionCoordsKey = "PositionCoords";
     public static HighestSeenWatchInventoryIdKey = "HighestSeenWatchInventoryId";
     public static HasSetupAlertsBeforeKey = "HasSetupAlertsBefore";
 
     public static WatchesListKey = "WatchesList";
     public static WatchInventoriesListKey = "WatchInventoriesList";
+
+    public static LastKnownAppVersionKey = "LastKnownAppVersion"; 
  
 
     constructor(public platform: Platform) {
@@ -47,15 +48,17 @@ export class KeyValService {
         //console.log(JSON.stringify(value));
         //console.log("--------------------------");
 
+        /*
         if( key == KeyValService.PositionCoordsKey ) {
             // hack to update the search params at the same time
             this.updateSearchParamCoords(value);
         }
+        */
 
         return NativeStorage.setItem(key, value);
     }
 
-
+    /*
     private updateSearchParamCoords(coords) {
         this.get(KeyValService.LastSearchParamsKey).then(
             (data) => {
@@ -71,6 +74,7 @@ export class KeyValService {
                 // dont care
             });
     }
+    */
 
 
     public setDefaultObjects() {
@@ -112,18 +116,6 @@ export class KeyValService {
                     },
                     (errr) => { });
             });
-            
-        this.get(KeyValService.PositionCoordsKey).then(
-            (data) => {//we good
-            },
-            (err) => {
-                this.set(KeyValService.PositionCoordsKey, {
-                    latitude: '',
-                    longitude: ''
-                }).then(
-                    (setted) => {
-                    },
-                    (errr) => { });
-            });
+        
     }
 }

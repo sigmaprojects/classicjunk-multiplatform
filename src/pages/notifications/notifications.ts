@@ -165,6 +165,7 @@ export class NotificationsPage {
         //console.log(JSON.stringify(err));
         //console.log(err.json()); //gives the object object
         //console.log(JSON.stringify(err.json())); //gives the object object
+        this.setWatchInventories([]);
         this.hideLoading();
         this.showErrors(["Error communicating with server, please try again later."]);
       }

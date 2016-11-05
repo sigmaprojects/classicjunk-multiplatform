@@ -127,28 +127,38 @@ export class Watches {
       return;
     }
 
-    this.keyValService.get(KeyValService.PositionCoordsKey).then(
-      (coords) => {
+    let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: true };
 
-        //console.log("got coords back from keyval");
-
-        let modal: Alert;
-        if (watch == null) {
-          modal = this.getEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
-            (watchData) => { this.saveWatch(watchData); }
-          );
-        } else {
-          modal = this.getEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
-            (watchData) => { this.saveWatch(watchData); }
-          );
-        }
-
-        modal.present();
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let coords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+        this.showEditAlert(coords, watch);
       },
       (error) => {
         //console.error('Error getting coords', error);
-      }
+        let coords = { latitude: null, longitude: null };
+        this.showEditAlert(coords, watch);
+      },
+      options
     );
+  }
+
+  private showEditAlert(coords, watch) {
+    let modal: Alert;
+    if (watch == null) {
+      modal = this.getEditModal(0, '', '', '', coords.latitude, coords.longitude, '',
+        (watchData) => { this.saveWatch(watchData); }
+      );
+    } else {
+      modal = this.getEditModal(watch.id, watch.label, watch.year_start, watch.year_end, coords.latitude, coords.longitude, watch.zipcode,
+        (watchData) => { this.saveWatch(watchData); }
+      );
+    }
+
+    modal.present();
   }
 
   public saveWatch(watchData): void {

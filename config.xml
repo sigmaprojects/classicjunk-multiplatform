@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="org.sigmaprojects.ClassicJunk" version="28.6.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.sigmaprojects.ClassicJunk" version="28.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ClassicJunk</name>
   <description>ClassicJunk, find your part.</description>
   <author email="apps@sigmaprojects.org" href="https://classicjunk.sigmaprojects.org/">Sigma Projects</author>
-  <content src="http://192.168.1.100:8100" original-src="index.html"/>
+  <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
@@ -86,7 +86,7 @@
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.0"/>
   <plugin name="cordova-plugin-statusbar" spec="~2.2.0"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
-  <plugin name="phonegap-plugin-push" spec="1.6.0">
+  <plugin name="phonegap-plugin-push" source="npm">
     <param name="SENDER_ID" value="352912943392"/>
   </plugin>
   <hook type="after_prepare" src="scripts/copy_resource_files.js"/>
