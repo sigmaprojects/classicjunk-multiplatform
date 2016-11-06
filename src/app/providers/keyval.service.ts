@@ -26,6 +26,10 @@ export class KeyValService {
         //this.setDefaultObjects();
     }
  
+    public clear(): Promise<any> {
+        return NativeStorage.clear();
+    }
+
     public getDeviceUuid(): string {
         // test uuid: ffffffff-e167-463a-e390-b0f35b303118
         //

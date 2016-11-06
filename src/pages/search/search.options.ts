@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+import _ from 'lodash';
 
 @Component({
     templateUrl: 'search.options.html'
@@ -13,39 +14,28 @@ export class SearchOptionsPage {
     }
 
     public sortBy(sort): void {
-        let inventories = this.caller.getInventories();
+        let oWis = this.caller.getInventories();
+        let nWis = [];
 
         switch(sort) {
             case 'arrived': {
-                //this.caller.setInventories([]);
-                inventories.sort(this.dynamicSort("-arrived"));
+                nWis = _.sortBy(oWis, ['created']).reverse();
                 break;
             }
             case 'distance': {
-                inventories.sort(this.dynamicSort("distance"));
+                nWis = _.sortBy(oWis, ['distance']);
                 break;
             }
             case 'caryear': {
-                inventories.sort(this.dynamicSort("caryear"));
+                nWis = _.sortBy(oWis, ['car','caryear']);
                 break;
             }
         }
-        this.caller.setInventories(inventories);
+        this.caller.setInventories(nWis);
         this.caller.dismissPopover();
     }
 
 
-    private dynamicSort(property) {
-        var sortOrder = 1;
-        if (property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a, b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    }
 
 
 }

@@ -30,21 +30,22 @@ export class WatchService {
     }
 
     public getWatchInventories(): Observable<any> {
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.getDeviceUuid());
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/watchinventories/format/json/device_id/' + encodeURI(this.getDeviceUuid());
         console.log("calling url: " + url);
         var response = this.http.get(url).map(
             (res) => {
-                let results = res.json().results;
-                let watchInventories = [];
-                for (let result of results) {
-                    for (let wi of result.watchinventories) {
-                        watchInventories.push(wi);
-                    }
-                }
+                let watchInventories = res.json().results;
                 if (watchInventories.length > 0) {
                     this.notifyAlertCreated();
                 }
-                this.keyValService.set(KeyValService.WatchInventoriesListKey,watchInventories);
+                this.keyValService.set(KeyValService.WatchInventoriesListKey,watchInventories).then(
+                    () => {
+                        console.log("finished caching WatchInventoriesListKey results");
+                    },
+                    (err) => {
+                        console.log("error caching WatchInventoriesListKey results " + JSON.stringify(err));
+                    }
+                );
                 return watchInventories;
             }
         );
@@ -52,23 +53,23 @@ export class WatchService {
     }
 
     public list(): Observable<any> {
-        let url = 'https://api-classicjunk.sigmaprojects.org/watch/getwatches/format/json/device_id/' + encodeURI(this.getDeviceUuid());
+        let url = 'https://api-classicjunk.sigmaprojects.org/watch/watches/format/json/device_id/' + encodeURI(this.getDeviceUuid());
         console.log("calling url: " + url);
         //var response = this.http.get(url).map(res => res.json());
         var response = this.http.get(url).map(
             (res) => {
-                let results = res.json().results;
-                let watches = [];
-                for (let result of results) {
-                    if (result.hasOwnProperty('watchinventories')) {
-                        result.watchinventories = [];
-                    }
-                    watches.push(result);
-                }
+                let watches = res.json().results;
                 if (watches.length > 0) {
                     this.notifyAlertCreated();
                 }
-                this.keyValService.set(KeyValService.WatchesListKey,watches);
+                this.keyValService.set(KeyValService.WatchesListKey,watches).then(
+                    () => {
+                        console.log("finished caching WatchesListKey results");
+                    },
+                    (err) => {
+                        console.log("error caching WatchesListKey results " + JSON.stringify(err));
+                    }
+                );
                 return watches;
             }
         );

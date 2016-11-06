@@ -42,12 +42,12 @@ export class InventoryModal {
       mapHref = 'geo:0,0?q=';
     }
 
-    this.addressUrl = sanitizer.bypassSecurityTrustUrl(mapHref+this.inventory.location.address);
+    this.addressUrl = sanitizer.bypassSecurityTrustUrl(mapHref+this.inventory.address);
 
-    this.phoneUrl = sanitizer.bypassSecurityTrustUrl('tel:'+this.inventory.location.phonenumber);
+    this.phoneUrl = sanitizer.bypassSecurityTrustUrl('tel:'+this.inventory.phonenumber);
 
     try {
-      this.inventory.location.phonenumber = this.formatPhone(this.inventory.location.phonenumber);
+      this.inventory.phonenumber = this.formatPhone(this.inventory.phonenumber);
     } catch(e) {}
 
     
@@ -86,7 +86,7 @@ export class InventoryModal {
          alert("failed")
       })
       */
-    let shareString = "Found a " + inventory.caryear + " " + inventory.car + " using the Classic Junk app. \n\n It's located at " + inventory.location.address + "." + 
+    let shareString = "Found a " + inventory.caryear + " " + inventory.car + " using the Classic Junk app. \n\n It's located at " + inventory.address + "." + 
       "\n\n #ClassicJunk #ClassicJunkApp #SigmaProjects #" + inventory.car.replace(/\s/g, ' #');
 
     let actionSheet = this.actionSheetCtrl.create({

@@ -1,3 +1,5 @@
+
+
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -17,14 +19,16 @@
     Loading...
   </div>
 <!--
-  <ion-list>
-    <ion-item *ngFor="let wi of watchInventories" (click)="itemTapped($event, wi)">
+  <ion-list [virtualScroll]="watchInventories" [approxItemHeight]="'60px'" no-lines>
+    <ion-item *virtualItem="let wi; let i = index;" (click)="itemTapped(i)">
+  <ion-list no-lines>
+    <ion-item *ngFor="let wi of watchInventories; let i = index;" (click)="itemTapped(i)">
 -->
   <ion-list [virtualScroll]="watchInventories" [approxItemHeight]="'60px'" no-lines>
     <ion-item *virtualItem="let wi; let i = index;" (click)="itemTapped(i)">
-      <h4 [class.new]="wi.id > lastHighestSeenId">{{wi.inventory.caryear}} {{wi.inventory.car}}</h4>
+      <h4 [class.new]="wi.id > lastHighestSeenId">{{wi.caryear}} {{wi.car}}</h4>
       <p>{{wi.timeago}}</p>
-      <h3 item-right>{{wi.inventory.location.label}}</h3>
+      <h3 item-right>{{wi.label}}</h3>
     </ion-item>
   </ion-list>
 

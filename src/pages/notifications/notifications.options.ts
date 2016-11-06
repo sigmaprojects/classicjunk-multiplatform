@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+import _ from 'lodash';
 
 @Component({
     templateUrl: 'notifications.options.html'
@@ -13,41 +14,30 @@ export class NotificationsOptionsPage {
     }
 
     public sortBy(sort): void {
-        let wis = this.caller.getWatchInventories();
+        let oWis = this.caller.getWatchInventories();
+        let nWis = [];
         switch(sort) {
             case 'created': {
-                wis.sort(this.dynamicSort("-created"));
+                nWis = _.sortBy(oWis, ['created']).reverse();
                 break;
             }
             case 'arrived': {
-                wis.sort(this.dynamicSort("-inventory.arrived"));
+                nWis = _.sortBy(oWis, ['arrived']).reverse();
                 break;
             }
             case 'distance': {
-                wis.sort(this.dynamicSort("distance"));
+                nWis = _.sortBy(oWis, ['distance']);
                 break;
             }
             case 'caryear': {
-                wis.sort(this.dynamicSort("inventory.caryear"));
+                nWis = _.sortBy(oWis, ['car','caryear']);
                 break;
             }
         }
-        this.caller.setWatchInventories(wis);
+        this.caller.setWatchInventories(nWis);
         this.caller.dismissPopover();
     }
 
-
-    private dynamicSort(property) {
-        var sortOrder = 1;
-        if (property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a, b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    }
 
   
 

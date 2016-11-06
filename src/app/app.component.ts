@@ -129,6 +129,7 @@ export class ClassicJunkApp {
     }
 
 
+
     pushSetup(currentVersion) {
         let push = Push.init({
             android: {
@@ -221,6 +222,9 @@ export class ClassicJunkApp {
 
     resetPushSetup(push, currentVersion) {
         let self = this;
+        this.keyvalService.clear().then(() => {
+            console.log("finished clearing cache");
+        });
         push.unregister(function () {
             console.log('unregistered successfully');
             self.keyvalService.set(KeyValService.LastKnownAppVersionKey, currentVersion).then(
