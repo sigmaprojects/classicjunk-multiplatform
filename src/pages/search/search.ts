@@ -38,8 +38,8 @@ export class Search {
     this.showingIndex = -1;
   }
 
-  ngOnInit() {
-    console.log('oninitfired');
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
     //this.showAlert();
 
     let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: true };
@@ -57,6 +57,7 @@ export class Search {
       },
       options
     );
+    
   }
 
 
