@@ -42,7 +42,13 @@ export class Search {
     console.log('ionViewWillEnter');
     //this.showAlert();
 
-    let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: true };
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      dismissOnPageChange: true
+    });
+    loader.present();
+
+    let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: false };
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -50,9 +56,11 @@ export class Search {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         };
+        loader.dismiss();
         this.showAlert(coords);
       },
       (err) => {
+        loader.dismiss();
         this.showAlert({latitude:null,longitude:null});
       },
       options

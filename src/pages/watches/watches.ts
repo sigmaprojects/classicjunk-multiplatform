@@ -127,6 +127,12 @@ export class Watches {
       return;
     }
 
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      dismissOnPageChange: true
+    });
+    loader.present();
+
     let options = { maximumAge: 10000, timeout: 3000, enableHighAccuracy: true };
 
     navigator.geolocation.getCurrentPosition(
@@ -135,10 +141,12 @@ export class Watches {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         };
+        loader.dismiss();
         this.showEditAlert(coords, watch);
       },
       (error) => {
         //console.error('Error getting coords', error);
+        loader.dismiss();
         let coords = { latitude: null, longitude: null };
         this.showEditAlert(coords, watch);
       },
