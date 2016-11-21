@@ -135,7 +135,8 @@ export class ClassicJunkApp {
             android: {
                 senderID: "352912943392",
                 icon: "ic_notification",
-                iconColor: "#c94545"
+                iconColor: "#c94545",
+                "clearNotifications": "true"
             },
             ios: {
                 senderID: "352912943392",

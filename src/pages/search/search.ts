@@ -147,7 +147,10 @@ export class Search {
         caryear: 'No results found.',
         car: '',
         timeago: '',
-        label: ''
+        label: '',
+        location: {
+          label: ''
+        }
       };
       invs.push(stub);
     }
